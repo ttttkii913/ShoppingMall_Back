@@ -2,6 +2,7 @@ package org.shoppingmall.user.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
@@ -21,14 +22,17 @@ public class User {
     @Column(name = "user_name")
     private String name;
 
-    private Integer password;
+    private String password;
     private String email;
     private String phone;
-    private Integer birthDay;
+    private String birthDay;
     private String address;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+
+    private String accessToken;
+    private String refreshToken;
 
     // fk
     // 한 명의 사용자는 여러 개의 리뷰를 쓸 수 있다.
@@ -40,4 +44,16 @@ public class User {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @Builder
+    private User(String name, String password, String email, String phone, String birthDay, String address, UserStatus userStatus, String accessToken, String refreshToken) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.birthDay = birthDay;
+        this.address = address;
+        this.userStatus = userStatus;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
 }
