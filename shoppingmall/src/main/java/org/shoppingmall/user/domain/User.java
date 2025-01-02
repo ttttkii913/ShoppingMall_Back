@@ -27,6 +27,9 @@ public class User {
     private Integer birthDay;
     private String address;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
     // fk
     // 한 명의 사용자는 여러 개의 리뷰를 쓸 수 있다.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
