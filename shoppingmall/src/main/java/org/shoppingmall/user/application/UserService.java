@@ -20,6 +20,7 @@ public class UserService {
     private final JwtTokenProvider JwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    // 자체 회원가입
     @Transactional
     public void userSignUp(UserJoinReqDto userJoinReqDto) {
         if (userRepository.existsByEmail(userJoinReqDto.email())) {
