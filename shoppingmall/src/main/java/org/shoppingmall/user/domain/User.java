@@ -1,18 +1,16 @@
 package org.shoppingmall.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.review.domain.Review;
+import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +53,15 @@ public class User {
         this.userStatus = userStatus;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+    }
+
+    public void update(UserInfoUpdateReqDto userInfoUpdateReqDto) {
+        this.name = userInfoUpdateReqDto.name();
+        this.email = userInfoUpdateReqDto.email();
+        // 구글 로그인은 password가 null이라 따로 처리해줘야함
+        if (userInfoUpdateReqDto.password() != null & !userInfoUpdateReqDto.email().isEmpty())
+            this.password = userInfoUpdateReqDto.password();
+        this.phone = userInfoUpdateReqDto.phone();
+        this.address = userInfoUpdateReqDto.address();
     }
 }

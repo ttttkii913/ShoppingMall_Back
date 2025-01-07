@@ -1,6 +1,9 @@
 package org.shoppingmall.user.application;
 
 import lombok.RequiredArgsConstructor;
+import org.shoppingmall.common.EntityFinder;
+import org.shoppingmall.common.error.ErrorCode;
+import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 import org.shoppingmall.user.api.dto.request.UserJoinReqDto;
 import org.shoppingmall.user.api.dto.request.UserLoginReqDto;
 import org.shoppingmall.user.api.dto.response.UserInfoResDto;
@@ -11,6 +14,8 @@ import org.shoppingmall.user.jwt.JwtTokenProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +36,6 @@ public class UserService {
         String accessToken = JwtTokenProvider.generateToken(userJoinReqDto.email());
         String refreshToken = JwtTokenProvider.refreshToken(userJoinReqDto.email());
 
-        // 정적 메서드 활용
         User user = userJoinReqDto.toEntity(encodedPassword, accessToken, refreshToken);
 
         userRepository.save(user);
@@ -53,11 +57,32 @@ public class UserService {
     }
 
     // 사용자 정보 조회
-    public UserInfoResDto getUserInfo(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    public UserInfoResDto getUserInfo(Principal principal) {
+        Long id = Long.parseLong(principal.getName());
+        User user = getUserById(id);
+        return UserInfoResDto.from(user);
+    }
 
-        // UserInfoResDto.from 메서드 활용
-        return UserInfoResDto.from(user, user.getAccessToken(), user.getRefreshToken());
+    // 사용자 정보 수정
+    public UserInfoResDto userInfoUpdate(UserInfoUpdateReqDto userInfoUpdateReqDto, Principal principal) {
+        Long id = Long.parseLong(principal.getName());
+        User user = getUserById(id);
+
+        user.update(userInfoUpdateReqDto);
+
+        // 비밀번호 수정할 경우에도 암호화 설정이 들어가도록(없으면 user 테이블에서 비밀번호가 그대로 보임)
+        if (userInfoUpdateReqDto.password() != null && !userInfoUpdateReqDto.password().isEmpty()) {
+            String newEncodedPassword = passwordEncoder.encode(userInfoUpdateReqDto.password());
+            user.setPassword(newEncodedPassword);
+        }
+
+        userRepository.save(user);
+        return UserInfoResDto.from(user);
+    }
+
+    // entity - user 찾기
+    private User getUserById(Long id) {
+        return EntityFinder.findByIdOrThrow(userRepository.findById(id)
+                , ErrorCode.USER_NOT_FOUND_EXCEPTION);
     }
 }

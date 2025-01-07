@@ -12,11 +12,9 @@ public record UserInfoResDto(
         String phone,
         String birthDay,
         String address,
-        UserStatus userStatus,
-        String accessToken,
-        String refreshToken
+        UserStatus userStatus
 ) {
-    public static UserInfoResDto from(User user, String accessToken, String refreshToken) {
+    public static UserInfoResDto from(User user) {
         return UserInfoResDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
@@ -24,8 +22,6 @@ public record UserInfoResDto(
                 .birthDay(user.getBirthDay())
                 .address(user.getAddress())
                 .userStatus(user.getUserStatus())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .build();
     }
 }
