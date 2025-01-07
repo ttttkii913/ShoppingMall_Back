@@ -63,5 +63,6 @@ public class User {
             this.password = userInfoUpdateReqDto.password();
         this.phone = userInfoUpdateReqDto.phone();
         this.address = userInfoUpdateReqDto.address();
+        this.birthDay = userInfoUpdateReqDto.birthDay();
     }
 }
