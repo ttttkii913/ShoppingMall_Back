@@ -21,11 +21,10 @@ public record UserJoinReqDto(
 
         String phone,
         String birthDay,
-        String address,
-        UserStatus userStatus
+        String address
 
 ) {
-        public User toEntity(String encodedPassword, String accessToken, String refreshToken) {
+        public User toEntity(String encodedPassword) {
                 return User.builder()
                         .name(this.name)
                         .email(this.email)
@@ -33,9 +32,6 @@ public record UserJoinReqDto(
                         .phone(this.phone)
                         .birthDay(this.birthDay)
                         .address(this.address)
-                        .userStatus(this.userStatus)
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
                         .build();
         }
 }

@@ -33,15 +33,18 @@ public class UserService {
         }
 
         String encodedPassword = passwordEncoder.encode(userJoinReqDto.password());
-        String accessToken = JwtTokenProvider.generateToken(userJoinReqDto.email());
-        String refreshToken = JwtTokenProvider.refreshToken(userJoinReqDto.email());
 
-        User user = userJoinReqDto.toEntity(encodedPassword, accessToken, refreshToken);
-
+        User user = userJoinReqDto.toEntity(encodedPassword);
         userRepository.save(user);
+
+        String accessToken = JwtTokenProvider.generateToken(user);
+        String refreshToken = JwtTokenProvider.refreshToken(user);
+
+        user.setAccessToken(accessToken);
+        user.setRefreshToken(refreshToken);
     }
 
-    // 로그인
+    // 자체 로그인
     public UserLoginResDto userSignIn(UserLoginReqDto userLoginReqDto) {
         User user = userRepository.findByEmail(userLoginReqDto.email())
                 .orElseThrow(() -> new IllegalArgumentException("이메일이나 패스워드가 일치하지 않습니다."));
@@ -50,8 +53,8 @@ public class UserService {
             throw new IllegalArgumentException("이메일이나 패스워드가 일치하지 않습니다.");
         }
 
-        String accessToken = JwtTokenProvider.generateToken(user.getEmail());
-        String refreshToken = JwtTokenProvider.refreshToken(user.getEmail());
+        String accessToken = JwtTokenProvider.generateToken(user);
+        String refreshToken = JwtTokenProvider.refreshToken(user);
 
         return UserLoginResDto.of(user, accessToken, refreshToken);
     }

@@ -44,13 +44,13 @@ public class JwtTokenProvider {
     }
 
     // User 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메소드
-    public String generateToken(String email) {
+    public String generateToken(User user) {
         Date date = new Date();
 
         Date expireDate = new Date(date.getTime() + Long.parseLong(tokenExpireTime));
 
         String accessToken = Jwts.builder()
-                .setSubject(email)
+                .setSubject(user.getId().toString())
                 .setIssuedAt(date)
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -59,13 +59,13 @@ public class JwtTokenProvider {
         return accessToken;
     }
 
-    public String refreshToken(String email) {
+    public String refreshToken(User user) {
         Date date = new Date();
 
         Date expireDate = new Date(date.getTime() + Long.parseLong(tokenExpireTime) * 24 * 7);
 
         String refreshToken = Jwts.builder()
-                .setSubject(email)
+                .setSubject(user.getId().toString())
                 .setIssuedAt(date)
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -106,12 +106,16 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        // 이메일을 입력받아 레포지토리에서 findBy 함수로 찾는다.
-        User user = userRepository.findByEmail(claims.getSubject()).orElseThrow();
+
+        Long userId = Long.parseLong(claims.getSubject());
+
+        // 사용자 ID를 통해 User 엔티티 조회
+        User user = userRepository.findById(userId).orElseThrow();
+
         // 권한이나 역할의 이름을 반환하는 메서드를 사용하여 member.getRole()를 문자열로 만들어 리턴함(배열)
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getUserStatus().toString()));
 
         // 사용자의 이메일과 공백, authorities 를 반환함
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(user.getId(), "", authorities);
     }
 }
