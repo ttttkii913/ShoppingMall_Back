@@ -2,10 +2,13 @@ package org.shoppingmall.product.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.category.domain.Category;
+import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
+import org.shoppingmall.user.domain.User;
 
 @Entity
 @Getter
@@ -20,7 +23,7 @@ public class Product {
     private String name;
 
     @Column(name = "product_price")
-    private String price;
+    private Integer price;
 
     @Column(name = "product_info")
     private String info;
@@ -28,9 +31,12 @@ public class Product {
     @Column(name = "product_stock")
     private Integer stock;
 
+    @Column(name = "product_image")
+    private String productImage;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")
-    private ProductStatus status;
+    private ProductStatus productStatus;
 
     // fk
     // 하나의 카테고리에 여러 개의 상품이 있다.
@@ -42,4 +48,32 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    // 한 명의 사용자가 여러 개의 상품을 등록할 수 있다.
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Builder
+    public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category) {
+        this.name = name;
+        this.price = price;
+        this.info = info;
+        this.stock = stock;
+        this.productStatus = productStatus;
+        this.productImage = productImage;
+        this.user = user;
+        this.category = category;
+    }
+
+    public void update(ProductUpdateReqDto productUpdateReqDto) {
+        this.name = productUpdateReqDto.name();
+        this.info = productUpdateReqDto.info();
+        this.stock = productUpdateReqDto.stock();
+        this.productStatus = productUpdateReqDto.productStatus();
+    }
+
+    public void updateImage(String productImage) {
+        this.productImage = productImage;
+    }
 }
