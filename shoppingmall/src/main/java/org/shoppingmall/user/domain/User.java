@@ -3,6 +3,7 @@ package org.shoppingmall.user.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.shoppingmall.cart.domain.Cart;
+import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 
@@ -41,6 +42,10 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    // 한 명의 사용자는 여러 개의 상품을 가질 수 있다 .
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
     @Builder
     private User(String name, String password, String email, String phone, String birthDay, String address, UserStatus userStatus, String accessToken, String refreshToken) {
