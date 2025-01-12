@@ -32,6 +32,7 @@ public record UserJoinReqDto(
                         .phone(this.phone)
                         .birthDay(this.birthDay)
                         .address(this.address)
+                        .userStatus(UserStatus.USER)
                         .build();
         }
 }
