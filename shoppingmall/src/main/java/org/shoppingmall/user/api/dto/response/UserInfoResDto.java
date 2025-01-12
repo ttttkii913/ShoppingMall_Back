@@ -16,6 +16,7 @@ public record UserInfoResDto(
 ) {
     public static UserInfoResDto from(User user) {
         return UserInfoResDto.builder()
+                .userId(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .phone(user.getPhone())
