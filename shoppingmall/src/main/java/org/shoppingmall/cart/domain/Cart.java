@@ -3,6 +3,7 @@ package org.shoppingmall.cart.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.shoppingmall.cartItem.domain.CartItem;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.user.domain.User;
 
@@ -27,9 +28,23 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // 하나의 장바구니에는 여러 개의 상품이 등록될 수 있다.
+    /*// 하나의 장바구니에는 여러 개의 상품이 등록될 수 있다.
     @JsonIgnore
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();*/
 
+    // cartItem으로 product와 연결
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
+
+
+    @Builder
+    public Cart(User user) {
+        this.user = user;
+    }
+
+    public void addCartItem(CartItem cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setCart(this);
+    }
 }
