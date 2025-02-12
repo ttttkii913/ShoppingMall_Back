@@ -2,6 +2,7 @@ package org.shoppingmall.orderItem.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.order.domain.Order;
@@ -31,4 +32,17 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Builder
+    public OrderItem(Integer totalPrice, Integer totalCount, DeliveryStatus deliveryStatus, Product product, Order order) {
+        this.totalPrice = totalPrice;
+        this.totalCount = totalCount;
+        this.deliveryStatus = deliveryStatus;
+        this.product = product;
+        this.order = order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
