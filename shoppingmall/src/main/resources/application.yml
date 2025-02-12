@@ -63,3 +63,9 @@ mail:
         timeout: 5000
         writetimeout: 5000
   auth-code-expiration-millis: 1800000
+
+imp:
+  api:
+    client-code: ${IMP_API_CLIENT_CODE}
+    key: ${IMP_API_KEY}
+    secret-key: ${IMP_API_SECRET_KEY}
