@@ -28,11 +28,6 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    /*// 하나의 장바구니에는 여러 개의 상품이 등록될 수 있다.
-    @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products = new ArrayList<>();*/
-
     // cartItem으로 product와 연결
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
