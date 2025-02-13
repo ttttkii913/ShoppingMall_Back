@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
+import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -53,6 +57,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    // 한 개의 상품에는 여러 개의 댓글이 달릴 수 있다.
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category) {
