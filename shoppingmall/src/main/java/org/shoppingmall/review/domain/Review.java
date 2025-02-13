@@ -2,8 +2,10 @@ package org.shoppingmall.review.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.user.domain.User;
 
 import java.time.LocalDate;
@@ -28,4 +30,19 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    // 상품에는 여러 개의 리뷰가 달릴 수 있다.
+    @ManyToOne
+    @JoinColumn(name ="product_id")
+    private Product product;
+
+    @Builder
+    public Review(String title, String content, String reviewImage, LocalDate createdAt, User user, Product product) {
+        this.title = title;
+        this.content = content;
+        this.reviewImage = reviewImage;
+        this.createdAt = LocalDate.now();
+        this.user = user;
+        this.product = product;
+    }
 }
