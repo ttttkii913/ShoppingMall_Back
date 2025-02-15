@@ -3,10 +3,14 @@ package org.shoppingmall.review.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.shoppingmall.common.config.S3Service;
+import org.shoppingmall.common.error.ErrorCode;
+import org.shoppingmall.common.exception.NotFoundException;
 import org.shoppingmall.order.domain.repository.OrderRepository;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.product.domain.repository.ProductRepository;
 import org.shoppingmall.review.api.dto.request.ReviewReqDto;
+import org.shoppingmall.review.api.dto.request.ReviewUpdateReqDto;
+import org.shoppingmall.review.api.dto.response.ReviewListResDto;
 import org.shoppingmall.review.api.dto.response.ReviewResDto;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.review.domain.repository.ReviewRepository;
@@ -17,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,12 +65,70 @@ public class ReviewService {
         return ReviewResDto.from(review);
     }
 
-    // 리뷰 조회
+    // 모든 리뷰 조회
+    public ReviewListResDto reviewFindAll() {
+        List<Review> reviews = reviewRepository.findAll();
+        List<ReviewResDto> reviewResDtos = reviews.stream()
+                .map(ReviewResDto::from)
+                .toList();
+        return ReviewListResDto.from(reviewResDtos);
+    }
 
+    // 사용자 리뷰 조회
+    public ReviewListResDto reviewFindUser(Principal principal) {
+        Long id = Long.parseLong(principal.getName());
+        List<Review> reviews = reviewRepository.findByUserId(id).orElseThrow(
+                ()-> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND_EXCEPTION
+                        , ErrorCode.REVIEW_NOT_FOUND_EXCEPTION.getMessage()));
 
+        List<ReviewResDto> reviewResDtos = reviews.stream()
+                .map(ReviewResDto::from)
+                .toList();
+        return ReviewListResDto.from(reviewResDtos);
+
+    }
 
     // 리뷰 수정
+    public ReviewResDto reviewUpdate(Long reviewId, ReviewUpdateReqDto reviewUpdateReqDto, MultipartFile reviewImage, Principal principal) throws IOException {
 
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND_EXCEPTION
+                        , ErrorCode.REVIEW_NOT_FOUND_EXCEPTION.getMessage()));
+
+        Long id = Long.parseLong(principal.getName());
+        Long currentUser = review.getUser().getId();
+
+        if (!id.equals(currentUser)) {
+            throw new NotFoundException(ErrorCode.NO_AUTHORIZATION_EXCEPTION
+                    , ErrorCode.NO_AUTHORIZATION_EXCEPTION.getMessage());
+        }
+        review.update(reviewUpdateReqDto);
+
+        // 이미지가 있을 경우 S3에 업로드하고 URL 업데이트
+        if (reviewImage != null && !reviewImage.isEmpty()) {
+            String imageUrl = s3Service.upload(reviewImage, "review");
+            review.updateImage(imageUrl);
+        }
+
+        reviewRepository.save(review);
+
+        return ReviewResDto.from(review);
+    }
 
     // 리뷰 삭제
+    public void reviewDelete(Long reviewId, Principal principal) {
+        Long id = Long.parseLong(principal.getName());
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND_EXCEPTION
+                        , ErrorCode.REVIEW_NOT_FOUND_EXCEPTION.getMessage()));
+
+        Long currentUser = review.getUser().getId();
+
+        if (!id.equals(currentUser)) {
+            throw new NotFoundException(ErrorCode.NO_AUTHORIZATION_EXCEPTION
+                    , ErrorCode.NO_AUTHORIZATION_EXCEPTION.getMessage());
+        }
+
+        reviewRepository.delete(review);
+    }
 }

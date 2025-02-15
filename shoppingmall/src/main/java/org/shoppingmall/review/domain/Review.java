@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.product.domain.Product;
+import org.shoppingmall.review.api.dto.request.ReviewUpdateReqDto;
 import org.shoppingmall.user.domain.User;
 
 import java.time.LocalDate;
@@ -44,5 +45,14 @@ public class Review {
         this.createdAt = LocalDate.now();
         this.user = user;
         this.product = product;
+    }
+
+    public void update(ReviewUpdateReqDto reviewUpdateReqDto) {
+        this.title = reviewUpdateReqDto.title();
+        this.content = reviewUpdateReqDto.content();
+    }
+
+    public void updateImage(String reviewImage) {
+        this.reviewImage = reviewImage;
     }
 }

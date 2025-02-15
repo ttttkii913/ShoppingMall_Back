@@ -32,7 +32,6 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     CART_SAVE_SUCCESS("장바구니에 성공적으로 등록되었습니다."),
     ORDER_SAVE_SUCCESS("주문이 성공적으로 저장되었습니다."),
     REVIEW_SAVE_SUCCESS("리뷰가 성공적으로 저장되었습니다."),
-
     EMAIL_AUTH_SUCCESS("이메일 인증에 성공하였습니다.");
 
     private final String message;
