@@ -18,10 +18,10 @@ public enum ErrorCode { // 반복적으로 사용될 Error 상태와 메세지, 
     PRODUCT_NOT_FOUND_EXCEPTION("상품을 찾을 수 없습니다."),
     CATEGORY_NOT_FOUND_EXCEPTION("카테고리를 찾을 수 없습니다."),
     REVIEW_NOT_FOUND_EXCEPTION("리뷰를 찾을 수 없습니다."),
-    LIKE_NOT_FOUND_EXCEPTION("좋아요를 누르지 않은 상품입니다."),
+    LIKE_NOT_FOUND_EXCEPTION("공감을 누르지 않은 상품입니다."),
 
     NO_AUTHORIZATION_EXCEPTION("권한이 없습니다."),
-    NO_USER_LIKE_PRODUCT_EXCEPTION("아직 좋아요를 누른 상품이 없습니다."),
+    NO_USER_LIKE_PRODUCT_EXCEPTION("아직 공감을 누른 상품이 없습니다."),
     /**
      * 500 INTERNAL SERVER ERROR
      */
@@ -31,7 +31,7 @@ public enum ErrorCode { // 반복적으로 사용될 Error 상태와 메세지, 
      * 400 BAD REQUEST
      */
     VALIDATION_ERROR("잘못된 요청입니다. BAD_REQUEST_400"),
-    ALREADY_LIKE_PRODUCT("이미 좋아요를 누른 상품입니다."),
+    ALREADY_LIKE_PRODUCT("이미 공감을 누른 상품입니다."),
     EMAIL_AUTH_FAIL("이메일 인증에 실패하였습니다.");
 
     private final String message;
