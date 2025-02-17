@@ -16,8 +16,6 @@ public class Like {
     @Column(name = "like_id")
     private Long id;
 
-    private Integer likeCount = 0;
-
     // fk
     // 한 명의 사용자는 여러 개의 좋아요를 누를 수 있다.
     @ManyToOne

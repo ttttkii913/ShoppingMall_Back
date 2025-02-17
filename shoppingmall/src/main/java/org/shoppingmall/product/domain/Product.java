@@ -42,6 +42,9 @@ public class Product {
     @Column(name = "product_status")
     private ProductStatus productStatus;
 
+    @Column(name = "like_count")
+    private Integer likeCount = 0;
+
     // fk
     // 하나의 카테고리에 여러 개의 상품이 있다.
     @ManyToOne
@@ -83,5 +86,15 @@ public class Product {
 
     public void updateImage(String productImage) {
         this.productImage = productImage;
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
     }
 }

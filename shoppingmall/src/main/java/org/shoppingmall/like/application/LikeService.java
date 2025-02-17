@@ -40,6 +40,7 @@ public class LikeService {
         }
 
         Like like = Like.of(user, product, likeType);
+        product.increaseLikeCount(); // 상품의 좋아요 수 증가
         likeRepository.save(like);
     }
 
@@ -62,6 +63,7 @@ public class LikeService {
         }
 
         Like like = existingLikes.get();
+        product.decreaseLikeCount(); // 상품의 좋아요 개수 감소
         likeRepository.delete(like);
     }
 }
