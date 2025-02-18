@@ -1,5 +1,8 @@
 package org.shoppingmall.mail.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.error.ErrorCode;
@@ -20,7 +23,12 @@ public class MailController {
 
     private final MailService mailService;
 
-    // 인증번호 발송
+    @Operation(summary = "회원가입시 이메일 인증 번호 발송", description = "회원가입시 사용자의 이메일 인증을 위해 인증 번호를 발송합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
+    })
     @PostMapping("/send")
     public ApiResponseTemplate<SuccessCode> sendVerificationCode(@RequestParam String email) {
         try {
@@ -32,7 +40,12 @@ public class MailController {
         }
     }
 
-    // 인증번호 확인
+    @Operation(summary = "회원가입시 이메일 인증 번호 검증", description = "회원가입시 사용자의 이메일 인증 번호를 검증합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
+    })
     @PostMapping("/check")
     public ApiResponseTemplate<SuccessCode> verifyCode(@RequestBody MailCheckReqDto mailCheckReqDto) {
         // 인증번호 검증
