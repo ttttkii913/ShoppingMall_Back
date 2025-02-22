@@ -1,5 +1,6 @@
 package org.shoppingmall.common.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.shoppingmall.common.error.SuccessCode;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ApiResponseTemplate<T> {
 
     private static final String SUCCESS_STATUS = "success";
