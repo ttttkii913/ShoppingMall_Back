@@ -1,6 +1,7 @@
 package org.shoppingmall.order.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
 import org.shoppingmall.cartItem.domain.CartItem;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -37,10 +39,29 @@ public class OrderService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new IllegalArgumentException("장바구니를 찾을 수 없습니다."));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(
+                () -> new IllegalArgumentException("장바구니를 찾을 수 없습니다."));
+
+        // cartItem이 없다면 주문에 성공하지 못 하도록 예외처리
+        if (cart.getCartItems().isEmpty()) {
+            throw new IllegalArgumentException("장바구니에 상품이 없습니다.");
+        }
+
+        // 최종 결제 금액 계산
+        long totalPrice = 0L;
+        for (CartItem cartItem : cart.getCartItems()) {
+            Product product = cartItem.getProduct();
+            if (product != null) {
+                totalPrice += product.getPrice() * cartItem.getQuantity();
+                log.info("최종 결제 금액: ", totalPrice);
+            }
+        }
 
         // 결제 정보 생성 (상태는 PENDING)
-        Payment payment = Payment.builder().price(0L).status(Status.PENDING).build();
+        Payment payment = Payment.builder()
+                .price(totalPrice)
+                .status(Status.PENDING)
+                .build();
         paymentRepository.save(payment);
 
         // 주문 생성
@@ -65,6 +86,9 @@ public class OrderService {
         }
 
         orderRepository.save(order);
+
+        // 장바구니 비우기
+        cart.getCartItems().clear();
 
         return OrderResDto.from(order);
 
