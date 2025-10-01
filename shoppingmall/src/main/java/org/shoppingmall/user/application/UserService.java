@@ -2,6 +2,7 @@ package org.shoppingmall.user.application;
 
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.EntityFinder;
+import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 import org.shoppingmall.user.api.dto.request.UserJoinReqDto;
@@ -21,9 +22,11 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
     private final UserRepository userRepository;
     private final JwtTokenProvider JwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final EntityFinderException entityFinder;
 
     // 자체 회원가입
     @Transactional
@@ -61,15 +64,14 @@ public class UserService {
 
     // 사용자 정보 조회
     public UserInfoResDto getUserInfo(Principal principal) {
-        Long id = Long.parseLong(principal.getName());
-        User user = getUserById(id);
+        User user = entityFinder.getUserFromPrincipal(principal);
         return UserInfoResDto.from(user);
     }
 
     // 사용자 정보 수정
     public UserInfoResDto userInfoUpdate(UserInfoUpdateReqDto userInfoUpdateReqDto, Principal principal) {
         Long id = Long.parseLong(principal.getName());
-        User user = getUserById(id);
+        User user = entityFinder.getUserById(id);
 
         user.update(userInfoUpdateReqDto);
 
@@ -81,11 +83,5 @@ public class UserService {
 
         userRepository.save(user);
         return UserInfoResDto.from(user);
-    }
-
-    // entity - user 찾기
-    private User getUserById(Long id) {
-        return EntityFinder.findByIdOrThrow(userRepository.findById(id)
-                , ErrorCode.USER_NOT_FOUND_EXCEPTION);
     }
 }

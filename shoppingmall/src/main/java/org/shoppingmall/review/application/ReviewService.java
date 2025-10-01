@@ -2,6 +2,7 @@ package org.shoppingmall.review.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.common.config.S3Service;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.NotFoundException;
@@ -28,22 +29,17 @@ import java.util.List;
 @Slf4j
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
     private final S3Service s3Service;
+    private final EntityFinderException entityFinder;
 
     // 리뷰 등록
     public ReviewResDto reviewSave(Long productId, ReviewReqDto reviewReqDto
                                     , MultipartFile multipartFile, Principal principal) throws IOException {
         // 사용자 찾기
-        Long id = Long.parseLong(principal.getName());
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("사용자를 찾을 수 없습니다. id = " + id));
+        User user = entityFinder.getUserFromPrincipal(principal);
 
         // 상품 찾기
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalArgumentException("상품을 찾을 수 없습니다. id = " + productId));
+        Product product = entityFinder.getProductById(productId);
 
         // 이미지 업로드를 선택적으로 넘기면서 이미지가 있을 경우에만 업로드
         String reviewImage = null; // 이미지 URL을 저장할 변수
@@ -91,10 +87,7 @@ public class ReviewService {
     // 리뷰 수정
     public ReviewResDto reviewUpdate(Long reviewId, ReviewUpdateReqDto reviewUpdateReqDto, MultipartFile reviewImage, Principal principal) throws IOException {
 
-        Review review = reviewRepository.findById(reviewId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND_EXCEPTION
-                        , ErrorCode.REVIEW_NOT_FOUND_EXCEPTION.getMessage()));
-
+        Review review = entityFinder.getReviewById(reviewId);
         Long id = Long.parseLong(principal.getName());
         Long currentUser = review.getUser().getId();
 
@@ -118,9 +111,7 @@ public class ReviewService {
     // 리뷰 삭제
     public void reviewDelete(Long reviewId, Principal principal) {
         Long id = Long.parseLong(principal.getName());
-        Review review = reviewRepository.findById(reviewId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND_EXCEPTION
-                        , ErrorCode.REVIEW_NOT_FOUND_EXCEPTION.getMessage()));
+        Review review = entityFinder.getReviewById(reviewId);
 
         Long currentUser = review.getUser().getId();
 

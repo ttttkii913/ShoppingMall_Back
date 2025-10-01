@@ -5,6 +5,7 @@ import org.shoppingmall.cart.api.dto.request.CartReqDto;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
 import org.shoppingmall.cartItem.domain.CartItem;
+import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.product.domain.repository.ProductRepository;
 import org.shoppingmall.user.domain.User;
@@ -21,14 +22,15 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final EntityFinderException entityFinder;
 
     @Transactional
     public Cart addToCart(Principal principal, CartReqDto cartReqDto) {
         //  user 찾기
-        Long id = Long.parseLong(principal.getName());
-        User user = userRepository.findById(id).orElseThrow( () -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        User user = entityFinder.getUserFromPrincipal(principal);
 
-        Product product = productRepository.findById(cartReqDto.productId()).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        // product 찾기
+        Product product = entityFinder.getProductById(cartReqDto.productId());
 
         // 장바구니 조회, 없으면 새로 생성
         Cart cart = cartRepository.findByUser(user).orElseGet(() -> {

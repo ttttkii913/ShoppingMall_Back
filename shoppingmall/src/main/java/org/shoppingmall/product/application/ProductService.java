@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.category.domain.CategoryType;
 import org.shoppingmall.category.domain.repository.CategoryRepository;
+import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.common.config.S3Service;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.NotFoundException;
@@ -29,18 +30,16 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final S3Service s3Service;
+    private final EntityFinderException entityFinder;
 
     // 등록
     @Transactional
     public ProductInfoResDto productSave(ProductSaveReqDto productSaveReqDto
                                     , MultipartFile multipartFile, Principal principal) throws IOException {
-        //  user 찾기
-        Long id = Long.parseLong(principal.getName());
-        User user = userRepository.findById(id).orElseThrow( () -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
+        User user = entityFinder.getUserFromPrincipal(principal);
         // category 찾기
         CategoryType categoryType = productSaveReqDto.categoryType();
         Category category = categoryRepository.findByCategoryType(categoryType).orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다."));
@@ -73,7 +72,7 @@ public class ProductService {
     @Transactional
     public ProductInfoResDto productUpdate(Long productId, ProductUpdateReqDto productUpdateReqDto, MultipartFile productImage, Principal principal) throws IOException {
 
-        Product product = productRepository.findById(productId).orElseThrow( () -> new NotFoundException(ErrorCode.USER_NOT_FOUND_EXCEPTION, ErrorCode.USER_NOT_FOUND_EXCEPTION.getMessage()));
+        Product product = entityFinder.getProductById(productId);
 
         // 수정 권한 확인
         Long id = Long.parseLong(principal.getName());

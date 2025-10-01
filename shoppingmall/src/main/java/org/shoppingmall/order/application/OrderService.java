@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
 import org.shoppingmall.cartItem.domain.CartItem;
+import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.order.api.dto.response.OrderResDto;
 import org.shoppingmall.order.domain.Order;
 import org.shoppingmall.order.domain.repository.OrderRepository;
@@ -28,16 +29,13 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
-    private final UserRepository userRepository;
     private final CartRepository cartRepository;
-
+    private final EntityFinderException entityFinder;
+    
     // 주문 생성 - 결제 대기 상태로 결제 api 호출하면 주문 완료 상태로 변경함으로써 주문 - 결제 로직 완성
     @Transactional
     public OrderResDto createOrder(Principal principal) {
-        // user 찾기
-        Long id = Long.parseLong(principal.getName());
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        User user = entityFinder.getUserFromPrincipal(principal);
 
         Cart cart = cartRepository.findByUser(user).orElseThrow(
                 () -> new IllegalArgumentException("장바구니를 찾을 수 없습니다."));
