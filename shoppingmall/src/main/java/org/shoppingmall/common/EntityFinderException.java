@@ -3,6 +3,8 @@ package org.shoppingmall.common;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
+import org.shoppingmall.comment.domain.Comment;
+import org.shoppingmall.comment.domain.repository.CommentRepository;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
 import org.shoppingmall.like.domain.Like;
@@ -29,6 +31,7 @@ public class EntityFinderException {
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
+    private final CommentRepository commentRepository;
 
     public User getUserFromPrincipal(Principal principal) {
         Long id = Long.parseLong(principal.getName());
@@ -71,5 +74,11 @@ public class EntityFinderException {
         return orderRepository.findById(orderId).orElseThrow(
                 () -> new CustomException(ErrorCode.ORDER_NOT_FOUND_EXCEPTION
                         , ErrorCode.ORDER_NOT_FOUND_EXCEPTION.getMessage() + orderId));
+    }
+
+    public Comment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND_EXCEPTION
+                        , ErrorCode.COMMENT_NOT_FOUND_EXCEPTION.getMessage() + commentId));
     }
 }

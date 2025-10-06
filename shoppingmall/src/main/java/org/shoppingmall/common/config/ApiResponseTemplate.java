@@ -1,44 +1,33 @@
 package org.shoppingmall.common.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.error.SuccessCode;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class ApiResponseTemplate<T> {
 
-    private static final String SUCCESS_STATUS = "success";
-    private static final String FAIL_STATUS = "fail";
-    private static final String ERROR_STATUS = "error";
+    private final int code;       // 응답 코드 (200, 404 등)
+    private final String message; // 응답 메시지
+    private T data;               // 응답 데이터
 
-    private String status;
-    private String message;
-    private T data;
-
-    public static <T> ApiResponseTemplate<T> successResponse(T data, SuccessCode successCode) {
-        return new ApiResponseTemplate<>(SUCCESS_STATUS, successCode.getMessage(), data);
+    // 데이터 없는 성공 응답
+    public static ApiResponseTemplate successWithNoContent(SuccessCode successCode) {
+        return new ApiResponseTemplate<>(successCode.getHttpStatusCode(), successCode.getMessage());
     }
 
-    public static <T> ApiResponseTemplate<T> successWithNoContent(SuccessCode successCode) {
-        return new ApiResponseTemplate<>(SUCCESS_STATUS, successCode.getMessage(), null);
+    // 데이터 포함한 성공 응답
+    public static <T> ApiResponseTemplate<T> successResponse(SuccessCode successCode, T data) {
+        return new ApiResponseTemplate<>(successCode.getHttpStatusCode(), successCode.getMessage(), data);
     }
 
-    public static <T> ApiResponseTemplate<T> errorResponse(ErrorCode errorCode) {
-        return new ApiResponseTemplate<>(ERROR_STATUS, errorCode.getMessage(), null);
+    // 에러 응답 (커스텀 메시지 포함)
+    public static ApiResponseTemplate errorResponse(ErrorCode errorCode, String customMessage) {
+        return new ApiResponseTemplate<>(errorCode.getHttpStatusCode(), customMessage);
     }
 
-    public static <T> ApiResponseTemplate<T> errorResponse(ErrorCode errorCode, T message) {
-        return new ApiResponseTemplate<>(ERROR_STATUS, errorCode.getMessage(), message);
-    }
-
-    private ApiResponseTemplate(String status, String message, T data) {
-        this.status = status;
-        this.message = message;
-        this.data = data;
-    }
 }

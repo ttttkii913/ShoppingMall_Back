@@ -6,6 +6,7 @@ import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,40 +17,48 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
-@Component
+@Slf4j // 로깅을 위한 Logger를 생성
+@RestControllerAdvice // REST API 컨트롤러에 대한 예외 처리 어드바이스임을 나타내는 어노테이션
+@Component // 클래스를 Spring 컴포넌트로 등록
 @RequiredArgsConstructor
-@Slf4j
 public class CustomExceptionAdvice {
 
-    // 내부 커스텀 에러 처리
-    @ExceptionHandler(CustomException.class)
-    public ApiResponseTemplate handleCustomException(CustomException exception) {
-        log.error("CustomException : {}", exception.getMessage(), exception);
-        return ApiResponseTemplate.errorResponse(exception.getErrorCode(), exception.getMessage());
-    }
-
+    /**
+     * 500 Internal Server Error
+     */
     // 원인 모를 이유의 예외 발생 시
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ApiResponseTemplate handleServerException(final Exception e) {
         log.error("Internal Server Error: {}", e.getMessage(), e);
-        return ApiResponseTemplate.errorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+        return ApiResponseTemplate.errorResponse(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     /**
-     * 400 BAD REQUEST validation
+     * custom error
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponseTemplate<String> handleValidationExceptions(MethodArgumentNotValidException e) {
-        log.error("Validation error: {}", e.getMessage(), e); // 수정: 로그 추가
+    // 내부 커스텀 에러 처리하기
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponseTemplate> handleCustomException(CustomException e) {
+        log.error("CustomException: {}", e.getMessage(), e);
 
-        // 에러 메시지 생성
+        ApiResponseTemplate<?> body = ApiResponseTemplate.errorResponse(e.getErrorCode(), e.getMessage());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus()) // 에러코드에 정의된 상태 코드 사용
+                .body(body);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiResponseTemplate<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException e) {
+        // 에러 메시지를 생성합니다
         Map<String, String> errorMap = new HashMap<>();
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        // 응답 생성
+
+        // 응답을 생성합니다.
         return ApiResponseTemplate.errorResponse(ErrorCode.VALIDATION_ERROR, convertMapToString(errorMap));
     }
 
@@ -58,9 +67,9 @@ public class CustomExceptionAdvice {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append(", ");
         }
-        if (sb.length() > 0) {
-            sb.setLength(sb.length() - 2); // 마지막 쉼표와 띄어쓰기를 제거
-        }
+        sb.deleteCharAt(sb.length() - 1); // 마지막 띄어쓰기 제거
+        sb.deleteCharAt(sb.length() - 1); // 마지막 쉼표 제거
         return sb.toString();
     }
+
 }
