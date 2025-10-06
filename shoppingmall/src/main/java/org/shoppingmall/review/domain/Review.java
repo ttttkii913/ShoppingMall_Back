@@ -37,6 +37,9 @@ public class Review {
     @JoinColumn(name ="product_id")
     private Product product;
 
+    @Column(name = "comment_count", nullable = false)
+    private Long commentCount;
+
     @Builder
     public Review(String title, String content, String reviewImage, LocalDate createdAt, User user, Product product) {
         this.title = title;
@@ -55,4 +58,9 @@ public class Review {
     public void updateImage(String reviewImage) {
         this.reviewImage = reviewImage;
     }
+
+    public void updateCommentCount(int count) {
+        this.commentCount = Math.max(0, this.commentCount + count);
+    }
+
 }
