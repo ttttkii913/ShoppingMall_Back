@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping("/user/login")
     private ApiResponseTemplate<UserLoginResDto> userSignIn(@RequestBody @Valid UserLoginReqDto userLoginReqDto) {
         UserLoginResDto userLoginResDto = userService.userSignIn(userLoginReqDto);
-        return ApiResponseTemplate.successResponse(userLoginResDto, SuccessCode.USER_LOGIN_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.USER_LOGIN_SUCCESS, userLoginResDto);
     }
 
     @Operation(summary = "사용자 정보 변경", description = "사용자 정보 변경(이름, 이메일, 비밀번호, 생일, 주소)")
@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping("/myPage/info/change")
     public ApiResponseTemplate<UserInfoResDto> userInfoUpdate(@RequestBody @Valid UserInfoUpdateReqDto userInfoUpdateReqDto, Principal principal) {
         UserInfoResDto userInfoResDto = userService.userInfoUpdate(userInfoUpdateReqDto, principal);
-        return ApiResponseTemplate.successResponse(userInfoResDto, SuccessCode.GET_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, userInfoResDto);
     }
 
 
@@ -68,6 +68,6 @@ public class UserController {
     @GetMapping("/myPage/view/info")
     public ApiResponseTemplate<UserInfoResDto> getUserInfo(Principal principal) {
         UserInfoResDto userInfoResDto = userService.getUserInfo(principal);
-        return ApiResponseTemplate.successResponse(userInfoResDto, SuccessCode.GET_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, userInfoResDto);
     }
 }

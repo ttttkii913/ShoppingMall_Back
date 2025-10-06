@@ -37,7 +37,7 @@ public class ProductController {
                                                               @RequestParam(value = "productImage", required = false) MultipartFile productImage,
                                                               Principal principal) throws IOException {
         ProductInfoResDto productInfoResDto = productService.productSave(productSaveReqDto, productImage, principal);
-        return ApiResponseTemplate.successResponse(productInfoResDto, SuccessCode.PRODUCT_SAVE_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_SAVE_SUCCESS, productInfoResDto);
     }
 
     @Operation(summary = "메인 페이지 - 전체 상품 조회", description = "모든 사용자가 메인페이지에서 상품을 볼 수 있습니다.")
@@ -49,7 +49,7 @@ public class ProductController {
     @GetMapping()
     public ApiResponseTemplate<ProductListResDto> productGet() {
         ProductListResDto productListResDto = productService.productGet();
-        return ApiResponseTemplate.successResponse(productListResDto, SuccessCode.GET_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productListResDto);
 
     }
 
@@ -65,7 +65,7 @@ public class ProductController {
                                                                 @RequestParam(value = "productImage", required = false) MultipartFile productImage,
                                                                 Principal principal) throws IOException {
         ProductInfoResDto productInfoResDto = productService.productUpdate(productId, productUpdateReqDto, productImage, principal);
-        return ApiResponseTemplate.successResponse(productInfoResDto, SuccessCode.PRODUCT_UPDATE_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_UPDATE_SUCCESS, productInfoResDto);
     }
 
     @Operation(summary = "판매자가 상품 삭제", description = "판매자가 상품을 삭제합니다.")

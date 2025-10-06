@@ -37,6 +37,6 @@ public class OrderController {
     @PostMapping("/order")
     public ApiResponseTemplate<OrderResDto> createOrder(Principal principal) {
         OrderResDto orderResDto = orderService.createOrder(principal);
-        return ApiResponseTemplate.successResponse(orderResDto, SuccessCode.ORDER_SAVE_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.ORDER_SAVE_SUCCESS, orderResDto);
     }
 }

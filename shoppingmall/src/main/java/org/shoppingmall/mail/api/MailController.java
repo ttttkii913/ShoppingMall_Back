@@ -36,7 +36,7 @@ public class MailController {
             mailService.sendSimpleMessage(email);
             return ApiResponseTemplate.successWithNoContent(SuccessCode.EMAIL_SEND_SUCCESS);
         } catch (MessagingException e) {
-            return ApiResponseTemplate.errorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+            return ApiResponseTemplate.errorResponse(ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class MailController {
         if (isVerified) {
             return ApiResponseTemplate.successWithNoContent(SuccessCode.EMAIL_AUTH_SUCCESS);
         } else {
-            return ApiResponseTemplate.errorResponse(ErrorCode.EMAIL_AUTH_FAIL);
+            return ApiResponseTemplate.errorResponse(ErrorCode.EMAIL_AUTH_FAIL, ErrorCode.EMAIL_AUTH_FAIL.getMessage());
         }
     }
 }

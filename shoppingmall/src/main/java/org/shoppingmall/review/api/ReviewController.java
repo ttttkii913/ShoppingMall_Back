@@ -37,7 +37,7 @@ public class ReviewController {
                                                         @RequestPart("review") ReviewReqDto reviewReqDto,
                                                         Principal principal) throws IOException {
         ReviewResDto reviewResDto = reviewService.reviewSave(productId, reviewReqDto, reviewImage, principal);
-        return ApiResponseTemplate.successResponse(reviewResDto, SuccessCode.REVIEW_SAVE_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.REVIEW_SAVE_SUCCESS, reviewResDto);
     }
 
     @Operation(summary = "모든 리뷰 리스트 조회", description = "모든 사용자가 모든 리뷰 리스트를 조회합니다.")
@@ -48,7 +48,7 @@ public class ReviewController {
     })    @GetMapping
     public ApiResponseTemplate<ReviewListResDto> reviewFindAll() {
         ReviewListResDto reviewListResDto = reviewService.reviewFindAll();
-        return ApiResponseTemplate.successResponse(reviewListResDto, SuccessCode.GET_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, reviewListResDto);
     }
 
     // 사용자의 모든 리뷰 조회 - 인증된 사용자
@@ -61,7 +61,7 @@ public class ReviewController {
     @GetMapping("/user")
     public ApiResponseTemplate<ReviewListResDto> reviewFindUser(Principal principal) {
         ReviewListResDto reviewListResDto = reviewService.reviewFindUser(principal);
-        return ApiResponseTemplate.successResponse(reviewListResDto, SuccessCode.GET_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, reviewListResDto);
     }
 
     @Operation(summary = "상품에 리뷰 수정", description = "인증된 사용자가 상품에 리뷰를 수정합니다.")
@@ -76,7 +76,7 @@ public class ReviewController {
                                                           @RequestParam(value = "reviewImage", required = false) MultipartFile reviewImage,
                                                           Principal principal) throws IOException {
         ReviewResDto reviewResDto = reviewService.reviewUpdate(reviewId, reviewUpdateReqDto, reviewImage, principal);
-        return ApiResponseTemplate.successResponse(reviewResDto, SuccessCode.REVIEW_UPDATE_SUCCESS);
+        return ApiResponseTemplate.successResponse(SuccessCode.REVIEW_UPDATE_SUCCESS, reviewResDto);
     }
 
     @Operation(summary = "상품에 리뷰 삭제", description = "인증된 사용자가 상품에 리뷰를 삭제합니다.")
