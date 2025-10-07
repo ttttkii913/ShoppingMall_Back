@@ -1,5 +1,5 @@
 package org.shoppingmall.user.domain;
 
 public enum UserStatus {
-    USER, GOOGLE_USER, ADMIN
+    USER, ADMIN, GOOGLE_USER, NAVER_USER, KAKAO_USER
 }

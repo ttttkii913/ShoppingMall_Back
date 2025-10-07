@@ -1,8 +1,6 @@
 package org.shoppingmall.common.config;
 
 import lombok.RequiredArgsConstructor;
-import org.shoppingmall.user.global.JwtFilter;
-import org.shoppingmall.user.global.GoogleTokenProvider;
 import org.shoppingmall.user.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

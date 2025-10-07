@@ -26,6 +26,7 @@ public class User {
     private String phone;
     private String birthDay;
     private String address;
+    private String pictureUrl;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
@@ -48,13 +49,14 @@ public class User {
     private List<Product> products = new ArrayList<>();
 
     @Builder
-    private User(String name, String password, String email, String phone, String birthDay, String address, UserStatus userStatus, String accessToken, String refreshToken) {
+    private User(String name, String password, String email, String phone, String birthDay, String address, String pictureUrl, UserStatus userStatus, String accessToken, String refreshToken) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.birthDay = birthDay;
         this.address = address;
+        this.pictureUrl = pictureUrl;
         this.userStatus = userStatus;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -70,4 +72,9 @@ public class User {
         this.address = userInfoUpdateReqDto.address();
         this.birthDay = userInfoUpdateReqDto.birthDay();
     }
+
+    public void saveRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
