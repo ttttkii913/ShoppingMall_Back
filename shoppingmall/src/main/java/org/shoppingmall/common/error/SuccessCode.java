@@ -32,6 +32,7 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     /**
      * 201 CREATED (POST의 결과 상태)
      */
+    REFRESH_TOKEN_SUCCESS(HttpStatus.CREATED, "리프레시 토큰으로 액세스 토큰 재발급에 성공하였습니다."),
     PRODUCT_SAVE_SUCCESS(HttpStatus.CREATED, "상품이 성공적으로 등록되었습니다."),
     CART_SAVE_SUCCESS(HttpStatus.CREATED, "장바구니에 성공적으로 등록되었습니다."),
     ORDER_SAVE_SUCCESS(HttpStatus.CREATED, "주문이 성공적으로 저장되었습니다."),

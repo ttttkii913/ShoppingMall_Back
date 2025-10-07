@@ -1,4 +1,7 @@
 spring:
+  web:
+    resources:
+      add-mappings: true
   servlet:
     multipart:
       max-file-size: 30MB
@@ -29,8 +32,10 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   access-token-validity-in-milliseconds: ${JWT_ACCESS_TOKEN_VALIDITY_IN_MILLISECONDS}
-client-id: ${GOOGLE_CLIENT_ID}
-client-secret: ${GOOGLE_CLIENT_SECRET}
+
+cookie:
+  secure: ${COOKIE_SECURE}
+  sameSite: ${COOKIE_SAMESITE}
 
 cloud:
   aws:
@@ -44,9 +49,19 @@ cloud:
     stack:
       auto: false
 
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI}
+
 kakao:
   client-id: ${KAKAO_CLIENT_ID}
   redirect-uri: ${KAKAO_REDIRECT_URI}
+
+naver:
+  client-id: ${naver.client-id}
+  redirect-uri: ${naver.redirect-uri}
+  client-secret: ${naver.client-secret}
 
 mail:
   host: smtp.gmail.com

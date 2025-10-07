@@ -39,7 +39,7 @@ public class UserService {
         userRepository.save(user);
 
         String accessToken = JwtTokenProvider.generateToken(user);
-        String refreshToken = JwtTokenProvider.refreshToken(user);
+        String refreshToken = JwtTokenProvider.generateRefreshToken(user);
 
         user.setAccessToken(accessToken);
         user.setRefreshToken(refreshToken);
@@ -55,7 +55,7 @@ public class UserService {
         }
 
         String accessToken = JwtTokenProvider.generateToken(user);
-        String refreshToken = JwtTokenProvider.refreshToken(user);
+        String refreshToken = JwtTokenProvider.generateRefreshToken(user);
 
         return UserLoginResDto.of(user, accessToken, refreshToken);
     }

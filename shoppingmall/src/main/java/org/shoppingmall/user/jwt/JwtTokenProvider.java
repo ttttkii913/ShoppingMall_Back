@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
@@ -23,11 +24,15 @@ import java.util.List;
 
 @Slf4j
 @Component
+@Getter
 public class JwtTokenProvider {
     private final UserRepository userRepository;
 
     @Value("${jwt.access-token-validity-in-milliseconds}")
     private String tokenExpireTime;
+
+    @Value("${refresh-token.expire.time}")
+    private String refreshTokenExpireTime;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -59,10 +64,10 @@ public class JwtTokenProvider {
         return accessToken;
     }
 
-    public String refreshToken(User user) {
+    public String generateRefreshToken(User user) {
         Date date = new Date();
 
-        Date expireDate = new Date(date.getTime() + Long.parseLong(tokenExpireTime) * 24 * 7);
+        Date expireDate = new Date(date.getTime() + Long.parseLong(refreshTokenExpireTime) * 24 * 7);
 
         String refreshToken = Jwts.builder()
                 .setSubject(user.getId().toString())
