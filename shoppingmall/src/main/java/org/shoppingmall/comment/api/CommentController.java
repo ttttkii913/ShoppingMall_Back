@@ -12,6 +12,7 @@ import org.shoppingmall.comment.api.dto.response.CommentInfoResDto;
 import org.shoppingmall.comment.api.dto.response.CommentListResDto;
 import org.shoppingmall.comment.application.CommentService;
 import org.shoppingmall.common.config.ApiResponseTemplate;
+import org.shoppingmall.common.config.CommonApiResponse;
 import org.shoppingmall.common.error.SuccessCode;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +22,12 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comment")
 @Tag(name = "댓글 API", description = "댓글 CRUD API")
+@CommonApiResponse
 public class CommentController {
 
     private final CommentService commentService;
 
     @Operation(summary = "댓글 전체 조회", description = "로그인한 사용자가 상품 리뷰 한 개에 달린 전체 댓글 리스트를 조회합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
-    })
     @GetMapping("/all")
     public ApiResponseTemplate<CommentListResDto> getCommentList(@RequestParam Long reviewId, Principal principal) {
         CommentListResDto commentListResDto = commentService.getCommentList(reviewId, principal);
@@ -37,10 +35,6 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 생성", description = "로그인한 사용자가 댓글을 생성합니다.\n" + "부모 댓글로 요청 보낼시에는 parentCommentId를 null로 보내면 됩니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
-    })
     @PostMapping
     public ApiResponseTemplate<CommentInfoResDto> saveComment(@RequestParam Long reviewId,
                                                          @Valid @RequestBody CommentSaveReqDto commentSaveReqDto,
@@ -50,10 +44,6 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 수정", description = "로그인한 사용자가 댓글을 수정합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
-    })
     @PutMapping
     public ApiResponseTemplate<CommentInfoResDto> updateComment(@RequestParam Long commentId,
                                                            @Valid @RequestBody CommentUpdateReqDto commentUpdateReqDto,
@@ -63,10 +53,6 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 삭제", description = "로그인한 사용자가 댓글을 삭제합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
-    })
     @DeleteMapping
     public ApiResponseTemplate<Integer> deleteComment(@RequestParam Long commentId, Principal principal) {
         int commentCount = commentService.deleteComment(commentId, principal);

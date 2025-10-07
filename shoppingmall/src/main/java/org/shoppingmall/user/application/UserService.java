@@ -1,9 +1,7 @@
 package org.shoppingmall.user.application;
 
 import lombok.RequiredArgsConstructor;
-import org.shoppingmall.common.EntityFinder;
 import org.shoppingmall.common.EntityFinderException;
-import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 import org.shoppingmall.user.api.dto.request.UserJoinReqDto;
 import org.shoppingmall.user.api.dto.request.UserLoginReqDto;

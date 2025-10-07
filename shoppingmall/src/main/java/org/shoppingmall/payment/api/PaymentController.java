@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.shoppingmall.common.config.CommonApiResponse;
 import org.shoppingmall.payment.api.dto.request.PaymentCallbackReqDto;
 import org.shoppingmall.payment.application.PaymentService;
 import org.shoppingmall.payment.api.dto.response.PaymentResDto;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "결제 API", description = "결제 관련 API")
+@CommonApiResponse
 public class PaymentController {
 
     @Value("${imp.api.client-code}")
@@ -26,11 +28,6 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @Operation(summary = "결제 페이지 정보 가져오기", description = "결제 페이지 정보를 가져옵니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
-    })
     @GetMapping("/payment/{orderUid}")
     public ResponseEntity<PaymentResDto> paymentPage(@PathVariable(name = "orderUid") String orderUid) {
         PaymentResDto paymentResDto = paymentService.getPaymentInfo(orderUid);
@@ -38,11 +35,6 @@ public class PaymentController {
     }
 
     @Operation(summary = "결제 결과 콜백", description = "결제 결과를 콜백 처리합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
-    })
     @PostMapping("/payment")
     public ResponseEntity<IamportResponse<Payment>> validationPayment(@RequestBody PaymentCallbackReqDto reqDto) {
         IamportResponse<Payment> response = paymentService.processPayment(reqDto);
@@ -50,22 +42,12 @@ public class PaymentController {
     }
 
     @Operation(summary = "결제 성공 응답", description = "결제 성공시 응답입니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
-    })
     @GetMapping("/success-payment")
     public ResponseEntity<String> successPaymentPage() {
         return new ResponseEntity<>("Payment Success", HttpStatus.OK);
     }
 
     @Operation(summary = "결제 실패 응답", description = "결제 실패시 응답입니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "500", description = "내부 서버 오류. 관리자 문의.")
-    })
     @GetMapping("/fail-payment")
     public ResponseEntity<String> failPaymentPage() {
         return new ResponseEntity<>("Payment Failed", HttpStatus.BAD_REQUEST);
