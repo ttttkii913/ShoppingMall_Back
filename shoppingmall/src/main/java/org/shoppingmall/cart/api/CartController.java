@@ -3,6 +3,7 @@ package org.shoppingmall.cart.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.cart.api.dto.request.CartReqDto;
@@ -17,6 +18,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/cart")
+@Tag(name = "장바구니 API", description = "Cart 관련 API")
 public class CartController {
     private final CartService cartService;
 

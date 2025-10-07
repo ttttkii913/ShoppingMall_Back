@@ -3,6 +3,7 @@ package org.shoppingmall.review.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.error.SuccessCode;
@@ -21,6 +22,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/review")
+@Tag(name = "리뷰 API", description = "리뷰 CRUD API")
 public class ReviewController {
 
     private final ReviewService reviewService;

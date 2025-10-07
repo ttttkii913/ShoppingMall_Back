@@ -3,6 +3,7 @@ package org.shoppingmall.user.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
@@ -19,6 +20,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "사용자 API", description = "사용자 관련 API")
 public class UserController {
     private final UserService userService;
 

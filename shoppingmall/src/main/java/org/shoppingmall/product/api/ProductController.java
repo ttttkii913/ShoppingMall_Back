@@ -3,6 +3,7 @@ package org.shoppingmall.product.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.common.config.ApiResponseTemplate;
@@ -22,6 +23,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
+@Tag(name = "상품 API", description = "상품 CRUD API")
 public class ProductController {
 
     private final ProductService productService;

@@ -3,6 +3,7 @@ package org.shoppingmall.order.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.error.SuccessCode;
@@ -21,6 +22,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "주문 API", description = "주문 생성 API")
 public class OrderController {
 
     private static final String ENCODED_ORDER_SUCCESS = URLEncoder.encode("주문 성공", StandardCharsets.UTF_8);

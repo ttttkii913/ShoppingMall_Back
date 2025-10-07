@@ -5,6 +5,7 @@ import com.siot.IamportRestClient.response.Payment;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.payment.api.dto.request.PaymentCallbackReqDto;
 import org.shoppingmall.payment.application.PaymentService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "결제 API", description = "결제 관련 API")
 public class PaymentController {
 
     @Value("${imp.api.client-code}")

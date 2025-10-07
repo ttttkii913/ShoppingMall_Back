@@ -3,6 +3,7 @@ package org.shoppingmall.like.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.error.SuccessCode;
@@ -15,6 +16,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/like")
+@Tag(name = "좋아요 API", description = "좋아요 생성, 삭제 API")
 public class LikeController {
 
     private final LikeService likeService;

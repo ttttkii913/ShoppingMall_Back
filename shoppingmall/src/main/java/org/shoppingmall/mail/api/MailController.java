@@ -3,6 +3,7 @@ package org.shoppingmall.mail.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.error.ErrorCode;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/email")
+@Tag(name = "이메일 인증 API", description = "회원가입시 이메일 인증 발송, 검증 API")
 public class MailController {
 
     private final MailService mailService;
