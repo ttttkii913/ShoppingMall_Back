@@ -1,6 +1,7 @@
 package org.shoppingmall.user.global;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.config.CommonApiResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/login")
+@Tag(name = "OAuth API", description = "소셜 로그인, 리프레시 토큰 API")
 @CommonApiResponse
 public class AuthLoginController {
     

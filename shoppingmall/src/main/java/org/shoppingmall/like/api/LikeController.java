@@ -1,8 +1,6 @@
 package org.shoppingmall.like.api;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
@@ -24,8 +22,8 @@ public class LikeController {
     private final LikeService likeService;
 
     @Operation(summary = "사용자가 상품에 공감", description = "인증된 사용자가 상품에 공감 표시를 합니다.")
-    @PostMapping("/{productId}")
-    public ApiResponseTemplate<String> likeSave(@PathVariable("productId") Long productId,
+    @PostMapping
+    public ApiResponseTemplate<String> likeSave(@RequestParam Long productId,
                                                 @RequestParam LikeType likeType,
                                                 Principal principal) {
         likeService.likeSave(productId, likeType, principal);
@@ -33,8 +31,8 @@ public class LikeController {
     }
 
     @Operation(summary = "사용자가 상품에 공감 취소", description = "인증된 사용자가 상품에 공감 표시를 취소합니다.")
-    @DeleteMapping("/{productId}")
-    public ApiResponseTemplate<String> likeDelete(@PathVariable("productId") Long productId, Principal principal) {
+    @DeleteMapping
+    public ApiResponseTemplate<String> likeDelete(@RequestParam Long productId, Principal principal) {
         likeService.likeDelete(productId, principal);
         return ApiResponseTemplate.successWithNoContent(SuccessCode.LIKE_DELETE_SUCCESS);
     }
