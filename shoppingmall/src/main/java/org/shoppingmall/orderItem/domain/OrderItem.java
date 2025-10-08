@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.order.domain.Order;
 import org.shoppingmall.product.domain.Product;
+import org.shoppingmall.productoption.domain.ProductOption;
 
 @Entity
 @Getter
@@ -28,17 +29,17 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // 여러 개의 주문 상품에는 하나의 상품이 있다.
+    // 여러 개의 주문 상품에는 하나의 상품 옵션이 있다.
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "product_option_id")
+    private ProductOption productOption;
 
     @Builder
-    public OrderItem(Integer totalPrice, Integer totalCount, DeliveryStatus deliveryStatus, Product product, Order order) {
+    public OrderItem(Integer totalPrice, Integer totalCount, DeliveryStatus deliveryStatus, ProductOption productOption, Order order) {
         this.totalPrice = totalPrice;
         this.totalCount = totalCount;
         this.deliveryStatus = deliveryStatus;
-        this.product = product;
+        this.productOption = productOption;
         this.order = order;
     }
 

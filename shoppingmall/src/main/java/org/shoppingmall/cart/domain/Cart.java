@@ -20,8 +20,6 @@ public class Cart {
     @Column(name = "cart_id") // 칼럼 이름 따로 설정
     private Long id; // 기본키는 cartId가 아닌 id로 설정하는 것이 관례, 엔티티별로 다양하게 사용하면 일관성 떨어짐
 
-    private Integer count;
-
     // fk 설정
     // 한 명의 사용자는 하나의 장바구니만 사용할 수 있다.
     @OneToOne
@@ -31,7 +29,6 @@ public class Cart {
     // cartItem으로 product와 연결
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
-
 
     @Builder
     public Cart(User user) {

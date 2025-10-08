@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.product.domain.Product;
+import org.shoppingmall.productoption.domain.ProductOption;
 
 @Entity
 @Getter
@@ -19,21 +20,25 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private Long id;
 
-    private Integer quantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_option_id")
+    private ProductOption productOption;
+
     @Builder
-    public CartItem(Integer quantity, Product product, Cart cart) {
+    public CartItem(Integer quantity, Cart cart, ProductOption productOption) {
         this.quantity = quantity;
-        this.product = product;
         this.cart = cart;
+        this.productOption = productOption;
+    }
+
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setCart(Cart cart) {

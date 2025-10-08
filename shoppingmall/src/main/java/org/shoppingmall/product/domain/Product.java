@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
+import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.domain.User;
 
@@ -64,6 +65,10 @@ public class Product {
     // 한 개의 상품에는 여러 개의 댓글이 달릴 수 있다.
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
+
+    // 한 개의 상품에는 여러 개의 상품 옵션이 있다.
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductOption> productOptions = new ArrayList<>();
 
     @Builder
     public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category) {
