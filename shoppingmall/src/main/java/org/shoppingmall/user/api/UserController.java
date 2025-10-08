@@ -40,4 +40,11 @@ public class UserController {
         UserLoginResDto userLoginResDto = userService.userSignIn(userLoginReqDto);
         return ApiResponseTemplate.successResponse(SuccessCode.USER_LOGIN_SUCCESS, userLoginResDto);
     }
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 - soft delete")
+    @DeleteMapping("/delete")
+    private ApiResponseTemplate<String> userInfoDelete(Principal principal) {
+        userService.userInfoDelete(principal);
+        return ApiResponseTemplate.successWithNoContent(SuccessCode.MEMBER_INFO_DELETE);
+    }
 }

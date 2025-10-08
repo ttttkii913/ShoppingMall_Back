@@ -60,6 +60,15 @@ public class UserService {
         return UserLoginResDto.of(user, accessToken, refreshToken);
     }
 
+    // 회원 탈퇴 - soft delete
+    @Transactional
+    public void userInfoDelete(Principal principal) {
+        User user = entityFinder.getUserFromPrincipal(principal);
+
+        // soft delete
+        user.infoDelete();
+    }
+
     // 사용자 정보 조회
     public UserInfoResDto getUserInfo(Principal principal) {
         User user = entityFinder.getUserFromPrincipal(principal);

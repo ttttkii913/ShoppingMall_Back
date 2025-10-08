@@ -28,7 +28,7 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     USER_SIGNUP_SUCCESS(HttpStatus.OK, "회원가입에 성공하였습니다."),
     USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공하였습니다."),
     EMAIL_SEND_SUCCESS(HttpStatus.OK, "이메일 전송에 성공하였습니다."),
-
+    MEMBER_INFO_DELETE(HttpStatus.OK, "회원 탈퇴에 성공하였습니다."),
     /**
      * 201 CREATED (POST의 결과 상태)
      */

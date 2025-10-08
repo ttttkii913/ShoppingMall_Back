@@ -27,6 +27,7 @@ public class User {
     private String birthDay;
     private String address;
     private String pictureUrl;
+    private boolean isDeleted = false;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
@@ -77,4 +78,17 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    public void infoDelete() {
+        this.name = "탈퇴한 회원";
+        this.password = null;
+        this.email = null;
+        this.phone = null;
+        this.birthDay = null;
+        this.address = null;
+        this.pictureUrl = null;
+        this.isDeleted = true;
+        this.userStatus = null;
+        this.accessToken = null;
+        this.refreshToken = null;
+    }
 }
