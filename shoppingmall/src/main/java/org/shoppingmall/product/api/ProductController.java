@@ -41,10 +41,16 @@ public class ProductController {
 
     @Operation(summary = "메인 페이지 - 전체 상품 조회", description = "모든 사용자가 메인페이지에서 상품을 볼 수 있습니다.")
     @GetMapping("/all")
-    public ApiResponseTemplate<ProductListResDto> productGet() {
-        ProductListResDto productListResDto = productService.productGet();
+    public ApiResponseTemplate<ProductListResDto> getProductList() {
+        ProductListResDto productListResDto = productService.getProductList();
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productListResDto);
+    }
 
+    @Operation(summary = "메인 페이지 - 상세 상품 조회", description = "모든 사용자가 상품 상세를 볼 수 있습니다.")
+    @GetMapping("/detail")
+    public ApiResponseTemplate<ProductInfoResDto> getProductDetail(@RequestParam Long productId) {
+        ProductInfoResDto productInfoResDto = productService.getProductDetail(productId);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productInfoResDto);
     }
 
     @Operation(summary = "판매자가 상품 수정", description = "판매자가 상품을 수정합니다.")
@@ -58,8 +64,8 @@ public class ProductController {
     }
 
     @Operation(summary = "판매자가 상품 삭제", description = "판매자가 상품을 삭제합니다.")
-    @DeleteMapping("/delete/{productId}")
-    public ApiResponseTemplate<String> productDelete(@PathVariable("productId") Long productId, Principal principal) {
+    @DeleteMapping("/delete")
+    public ApiResponseTemplate<String> productDelete(@RequestParam Long productId, Principal principal) {
         productService.productDelete(productId, principal);
         return ApiResponseTemplate.successWithNoContent(SuccessCode.PRODUCT_DELETE_SUCCESS);
     }

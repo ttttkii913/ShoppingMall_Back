@@ -59,13 +59,19 @@ public class ProductService {
 
     }
 
-    // 조회
-    public ProductListResDto productGet() {
+    // 전체 상품 조회
+    public ProductListResDto getProductList() {
         List<Product> products = productRepository.findAll();
         List<ProductInfoResDto> productInfoResDtoList = products.stream()
                 .map(ProductInfoResDto::from)
                 .toList();
         return ProductListResDto.from(productInfoResDtoList);
+    }
+
+    // 상세 상품 조회
+    public ProductInfoResDto getProductDetail(Long productId) {
+        Product product = entityFinder.getProductById(productId);
+        return ProductInfoResDto.from(product);
     }
 
     // 수정
