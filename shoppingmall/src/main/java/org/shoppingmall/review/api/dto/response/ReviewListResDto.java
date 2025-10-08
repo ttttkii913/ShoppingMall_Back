@@ -6,9 +6,9 @@ import java.util.List;
 
 @Builder
 public record ReviewListResDto(
-        List<ReviewResDto> reviewResDtos
+        List<ReviewInfoResDto> reviewResDtos
 ) {
-    public static ReviewListResDto from(List<ReviewResDto> reviewResDtos) {
+    public static ReviewListResDto from(List<ReviewInfoResDto> reviewResDtos) {
         return ReviewListResDto.builder()
                 .reviewResDtos(reviewResDtos)
                 .build();

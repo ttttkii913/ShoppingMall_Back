@@ -4,7 +4,7 @@ import lombok.Builder;
 import org.shoppingmall.review.domain.Review;
 
 @Builder
-public record ReviewResDto(
+public record ReviewInfoResDto(
         Long productId,
         Long userId,
         String title,
@@ -12,8 +12,8 @@ public record ReviewResDto(
         String reviewImage
 ) {
     // product랑 매핑 연결 안 되어있으면 productId 안 불러와짐
-    public static ReviewResDto from(Review review) {
-        return ReviewResDto.builder()
+    public static ReviewInfoResDto from(Review review) {
+        return ReviewInfoResDto.builder()
                 .productId(review.getProduct().getId())
                 .userId(review.getUser().getId())
                 .title(review.getTitle())
