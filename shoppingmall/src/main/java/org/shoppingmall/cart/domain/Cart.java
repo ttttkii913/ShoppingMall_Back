@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.shoppingmall.cartItem.domain.CartItem;
 import org.shoppingmall.product.domain.Product;
+import org.shoppingmall.productoption.domain.ProductOption;
+import org.shoppingmall.productoption.domain.ProductOptionColor;
 import org.shoppingmall.user.domain.User;
 
 import java.util.ArrayList;
@@ -38,5 +40,9 @@ public class Cart {
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
         cartItem.setCart(this);
+    }
+
+    public void updateCartItem(CartItem cartItem, ProductOption productOption, int quantity) {
+        cartItem.updateProductOption(productOption, quantity);
     }
 }

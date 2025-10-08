@@ -4,17 +4,17 @@ import org.shoppingmall.cart.domain.Cart;
 
 import java.util.List;
 
-public record CartResDto(
+public record CartListResDto(
         Long cartId,
         Long userId,
-        List<CartItemResDto> cartItemResDtos
+        List<CartInfoResDto> cartItemResDtos
 ) {
-    public CartResDto(Cart cart) {
+    public CartListResDto(Cart cart) {
         this(
                 cart.getId(),
                 cart.getUser().getId(),
                 cart.getCartItems().stream()
-                        .map(CartItemResDto::new)
+                        .map(CartInfoResDto::new)
                         .toList()
         );
     }

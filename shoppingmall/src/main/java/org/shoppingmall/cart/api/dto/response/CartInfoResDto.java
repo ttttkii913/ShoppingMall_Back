@@ -2,15 +2,15 @@ package org.shoppingmall.cart.api.dto.response;
 
 import org.shoppingmall.cartItem.domain.CartItem;
 
-public record CartItemResDto (
+public record CartInfoResDto(
         Long cartItemId,
-        Long productId,
+        Long productOptionId,
         Integer quantity
 ) {
-public CartItemResDto(CartItem cartItem) {
+public CartInfoResDto(CartItem cartItem) {
     this(
             cartItem.getId(),
-            cartItem.getProduct().getId(),
+            cartItem.getProductOption().getId(),
             cartItem.getQuantity()
     );
 }

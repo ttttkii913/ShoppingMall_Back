@@ -1,8 +1,8 @@
 package org.shoppingmall.cart.api.dto.request;
 
-public record CartReqDto(
+public record CartSaveReqDto(
 
-        Long productId,
+        Long productOptionId,
         Integer quantity
 ) {
 }
