@@ -1,6 +1,8 @@
 package org.shoppingmall.productoption.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.shoppingmall.product.domain.Product;
@@ -8,6 +10,7 @@ import org.shoppingmall.product.domain.Product;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor @Builder
 public class ProductOption {
 
     @Id
@@ -25,4 +28,10 @@ public class ProductOption {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void update(String size, int stock, ProductOptionColor color) {
+        this.size = size;
+        this.stock = stock;
+        this.productOptionColor = color;
+    }
 }
