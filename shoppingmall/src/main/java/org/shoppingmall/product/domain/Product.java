@@ -52,11 +52,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // 하나의 장바구니에는 여러 개의 상품이 등록될 수 있다.
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
-
     // 한 명의 사용자가 여러 개의 상품을 등록할 수 있다.
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.productoption.domain.ProductOption;
+import org.shoppingmall.productoption.domain.ProductOptionColor;
 
 @Entity
 @Getter
@@ -43,5 +44,10 @@ public class CartItem {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public void updateProductOption(ProductOption productOption, int quantity) {
+        this.productOption = productOption;
+        this.quantity = quantity;
     }
 }

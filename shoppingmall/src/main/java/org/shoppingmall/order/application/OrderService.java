@@ -13,9 +13,8 @@ import org.shoppingmall.orderItem.domain.OrderItem;
 import org.shoppingmall.payment.domain.Payment;
 import org.shoppingmall.payment.domain.Status;
 import org.shoppingmall.payment.domain.repository.PaymentRepository;
-import org.shoppingmall.product.domain.Product;
+import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.user.domain.User;
-import org.shoppingmall.user.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +47,9 @@ public class OrderService {
         // 최종 결제 금액 계산
         long totalPrice = 0L;
         for (CartItem cartItem : cart.getCartItems()) {
-            Product product = cartItem.getProduct();
-            if (product != null) {
-                totalPrice += product.getPrice() * cartItem.getQuantity();
+            ProductOption productOption = cartItem.getProductOption();
+            if (productOption != null) {
+                totalPrice += productOption.getProduct().getPrice() * cartItem.getQuantity();
                 log.info("최종 결제 금액: ", totalPrice);
             }
         }
@@ -71,12 +70,12 @@ public class OrderService {
 
         // 장바구니 아이템을 주문 아이템으로 변환
         for (CartItem cartItem : cart.getCartItems()) {
-            Product product = cartItem.getProduct();  // 상품 객체 가져오기
-            if (product != null) {
+            ProductOption productOption = cartItem.getProductOption();  // 상품 객체 가져오기
+            if (productOption != null) {
                 OrderItem orderItem = OrderItem.builder()
                         .totalCount(cartItem.getQuantity())
-                        .totalPrice(product.getPrice() * cartItem.getQuantity())  // 총 가격 계산
-                        .product(product)  // 상품 설정
+                        .totalPrice(productOption.getProduct().getPrice() * cartItem.getQuantity())  // 총 가격 계산
+                        .productOption(productOption)  // 상품 설정
                         .order(order)  // 주문과 연결
                         .build();
                 order.addOrderItem(orderItem);

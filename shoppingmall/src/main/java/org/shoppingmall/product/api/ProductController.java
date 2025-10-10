@@ -1,14 +1,12 @@
 package org.shoppingmall.product.api;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.config.CommonApiResponse;
 import org.shoppingmall.common.error.SuccessCode;
+import org.shoppingmall.productoption.api.dto.request.ProductOptionUpdateReqDto;
 import org.shoppingmall.product.api.dto.request.ProductSaveReqDto;
 import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
 import org.shoppingmall.product.api.dto.response.ProductInfoResDto;
@@ -61,6 +59,13 @@ public class ProductController {
                                                                 Principal principal) throws IOException {
         ProductInfoResDto productInfoResDto = productService.productUpdate(productId, productUpdateReqDto, productImage, principal);
         return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_UPDATE_SUCCESS, productInfoResDto);
+    }
+
+    @Operation(summary = "상품 옵션 수정", description = "상품 옵션 정보를 수정합니다.")
+    @PatchMapping("/update")
+    public ApiResponseTemplate<String> updateProductOption(@RequestBody ProductOptionUpdateReqDto reqDto) {
+        productService.updateProductOption(reqDto);
+        return ApiResponseTemplate.successWithNoContent(SuccessCode.PRODUCT_OPTION_UPDATE_SUCCESS);
     }
 
     @Operation(summary = "판매자가 상품 삭제", description = "판매자가 상품을 삭제합니다.")

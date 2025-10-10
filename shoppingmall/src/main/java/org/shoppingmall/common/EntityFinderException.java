@@ -13,6 +13,8 @@ import org.shoppingmall.order.domain.Order;
 import org.shoppingmall.order.domain.repository.OrderRepository;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.product.domain.repository.ProductRepository;
+import org.shoppingmall.productoption.domain.ProductOption;
+import org.shoppingmall.productoption.domain.repository.ProductOptionRepository;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.review.domain.repository.ReviewRepository;
 import org.shoppingmall.user.domain.User;
@@ -32,6 +34,7 @@ public class EntityFinderException {
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
     private final CommentRepository commentRepository;
+    private final ProductOptionRepository productOptionRepository;
 
     public User getUserFromPrincipal(Principal principal) {
         Long id = Long.parseLong(principal.getName());
@@ -80,5 +83,11 @@ public class EntityFinderException {
         return commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND_EXCEPTION
                         , ErrorCode.COMMENT_NOT_FOUND_EXCEPTION.getMessage() + commentId));
+    }
+
+    public ProductOption getProductOptionById(Long productOptionId) {
+        return productOptionRepository.findById(productOptionId).orElseThrow(
+                () -> new CustomException(ErrorCode.PRODUCT_OPTION_NOT_FOUND_EXCEPTION,
+                        ErrorCode.PRODUCT_OPTION_NOT_FOUND_EXCEPTION.getMessage() + productOptionId));
     }
 }
