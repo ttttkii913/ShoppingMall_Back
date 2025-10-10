@@ -32,6 +32,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
     private String accessToken;
     private String refreshToken;
 
@@ -50,7 +53,7 @@ public class User {
     private List<Product> products = new ArrayList<>();
 
     @Builder
-    private User(String name, String password, String email, String phone, String birthDay, String address, String pictureUrl, UserStatus userStatus, String accessToken, String refreshToken) {
+    private User(String name, String password, String email, String phone, String birthDay, String address, String pictureUrl, UserStatus userStatus, AuthProvider authProvider, String accessToken, String refreshToken) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -59,6 +62,7 @@ public class User {
         this.address = address;
         this.pictureUrl = pictureUrl;
         this.userStatus = userStatus;
+        this.authProvider = authProvider;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
