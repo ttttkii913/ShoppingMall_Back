@@ -12,19 +12,21 @@ public enum ErrorCode {
     /**
      * 404 NOT FOUND
      */
-    CART_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"장바구니가 없습니다.", "BAD_REQUEST_400"),
-    ORDER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"주문이 없습니다.", "BAD_REQUEST_400"),
-    USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"해당 사용자가 없습니다.", "BAD_REQUEST_400"),
-    FILE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"파일을 찾을 수 없습니다.", "BAD_REQUEST_400"),
-    PRODUCT_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"상품을 찾을 수 없습니다.", "BAD_REQUEST_400"),
-    CATEGORY_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"카테고리를 찾을 수 없습니다.", "BAD_REQUEST_400"),
-    REVIEW_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"리뷰를 찾을 수 없습니다.", "BAD_REQUEST_400"),
-    COMMENT_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"댓글을 찾을 수 없습니다.", "BAD_REQUEST_400"),
-    LIKE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"공감을 누르지 않은 상품입니다.", "BAD_REQUEST_400"),
+    CART_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"장바구니가 없습니다.", "NOT_FOUND_404"),
+    CARTITEM_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"장바구니 상품이 없습니다.", "NOT_FOUND_404"),
+    ORDER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"주문이 없습니다.", "NOT_FOUND_404"),
+    USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"해당 사용자가 없습니다.", "NOT_FOUND_404"),
+    FILE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"파일을 찾을 수 없습니다.", "NOT_FOUND_404"),
+    PRODUCT_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"상품을 찾을 수 없습니다.", "NOT_FOUND_404"),
+    CATEGORY_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"카테고리를 찾을 수 없습니다.", "NOT_FOUND_404"),
+    REVIEW_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"리뷰를 찾을 수 없습니다.", "NOT_FOUND_404"),
+    COMMENT_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"댓글을 찾을 수 없습니다.", "NOT_FOUND_404"),
+    LIKE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"공감을 누르지 않은 상품입니다.", "NOT_FOUND_404"),
+    PRODUCT_OPTION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"상품 옵션을 찾을 수 없습니다", "NOT_FOUND_404"),
+    NO_USER_LIKE_PRODUCT_EXCEPTION(HttpStatus.NOT_FOUND,"아직 공감을 누른 상품이 없습니다.", "NOT_FOUND_404"),
 
     // 401 UNAUTHORIZED
     NO_AUTHORIZATION_EXCEPTION(HttpStatus.UNAUTHORIZED,"권한이 없습니다.", "UNAUTHORIZED_401"),
-    NO_USER_LIKE_PRODUCT_EXCEPTION(HttpStatus.UNAUTHORIZED,"아직 공감을 누른 상품이 없습니다.", "UNAUTHORIZED_401"),
 
     /**
      * 500 INTERNAL SERVER ERROR
