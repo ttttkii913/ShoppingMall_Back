@@ -2,6 +2,7 @@ package org.shoppingmall.user.global.oauth2.google.application;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.shoppingmall.user.domain.AuthProvider;
 import org.shoppingmall.user.domain.User;
 import org.shoppingmall.user.domain.UserStatus;
 import org.shoppingmall.user.domain.repository.UserRepository;
@@ -81,7 +82,7 @@ public class GoogleLoginService {
         throw new RuntimeException("유저 정보를 가져오는데 실패했습니다.");
     }
 
-    public User processLogin(String code) {
+    public User processLogin(String code, UserStatus userStatus) {
         String accessToken = getGoogleAccessToken(code);
 
         GoogleUserInfo userInfo = getUserInfo(accessToken);
@@ -95,7 +96,8 @@ public class GoogleLoginService {
                         .email(userInfo.getEmail())
                         .name(userInfo.getName())
                         .pictureUrl(userInfo.getPictureUrl())
-                        .userStatus(UserStatus.GOOGLE_USER)
+                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .authProvider(AuthProvider.GOOGLE)
                         .build())
         );
     }

@@ -8,6 +8,7 @@ import org.shoppingmall.common.config.CommonApiResponse;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
 import org.shoppingmall.user.domain.User;
+import org.shoppingmall.user.domain.UserStatus;
 import org.shoppingmall.user.global.oauth2.google.application.GoogleLoginService;
 import org.shoppingmall.user.global.oauth2.kakao.application.KakaoLoginService;
 import org.shoppingmall.user.global.oauth2.naver.application.NaverLoginService;
@@ -29,22 +30,25 @@ public class AuthLoginController {
 
     @Operation(summary = "구글 로그인", description = "구글 로그인 콜백 api입니다.")
     @GetMapping("/google")
-    public ResponseEntity<ApiResponseTemplate<LoginResDto>> googleCallback(@RequestParam String code) {
-        User user = googleLoginService.processLogin(code);
+    public ResponseEntity<ApiResponseTemplate<LoginResDto>> googleCallback(@RequestParam String code, @RequestParam(defaultValue = "USER") String type) {
+        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.SELLER : UserStatus.USER;
+        User user = googleLoginService.processLogin(code, status);
         return authLoginService.loginSuccess(user);
     }
 
     @Operation(summary = "카카오 로그인", description = "카카오 로그인 콜백 api입니다.")
     @GetMapping("/kakao")
-    public ResponseEntity<ApiResponseTemplate<LoginResDto>> kakaoCallback(@RequestParam String code) {
-        User user = kakaoLoginService.processLogin(code);
+    public ResponseEntity<ApiResponseTemplate<LoginResDto>> kakaoCallback(@RequestParam String code, @RequestParam(defaultValue = "USER") String type) {
+        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.SELLER : UserStatus.USER;
+        User user = kakaoLoginService.processLogin(code, status);
         return authLoginService.loginSuccess(user);
     }
 
     @Operation(summary = "네이버 로그인", description = "네이버 로그인 콜백 api입니다.")
     @GetMapping("/naver")
-    public ResponseEntity<ApiResponseTemplate<LoginResDto>> naverCallback(@RequestParam String code, @RequestParam String state) {
-        User user = naverLoginService.processLogin(code, state);
+    public ResponseEntity<ApiResponseTemplate<LoginResDto>> naverCallback(@RequestParam String code, @RequestParam String state, @RequestParam(defaultValue = "USER") String type) {
+        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.SELLER : UserStatus.USER;
+        User user = naverLoginService.processLogin(code, state, status);
         return authLoginService.loginSuccess(user);
     }
 

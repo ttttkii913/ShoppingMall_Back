@@ -2,6 +2,7 @@ package org.shoppingmall.user.global.oauth2.naver.application;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.shoppingmall.user.domain.AuthProvider;
 import org.shoppingmall.user.domain.User;
 import org.shoppingmall.user.domain.UserStatus;
 import org.shoppingmall.user.domain.repository.UserRepository;
@@ -80,7 +81,7 @@ public class NaverLoginService {
     }
 
     // 네이버 로그인 후 JWT 토큰을 반환하는 메소드
-    public User processLogin(String code, String state) {
+    public User processLogin(String code, String state, UserStatus userStatus) {
         String accessToken = getNaverAccessToken(code, state);
         NaverUserInfo naverUserInfo = getUserInfoFromNaver(accessToken);
 
@@ -93,7 +94,8 @@ public class NaverLoginService {
                         .email(naverUserInfo.getResponse().getEmail())
                         .name(naverUserInfo.getResponse().getNickname())
                         .pictureUrl(naverUserInfo.getResponse().getPictureUrl())
-                        .userStatus(UserStatus.NAVER_USER)
+                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .authProvider(AuthProvider.NAVER)
                         .build())
         );
     }

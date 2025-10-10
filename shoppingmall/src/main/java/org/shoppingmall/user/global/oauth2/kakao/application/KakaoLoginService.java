@@ -2,6 +2,7 @@ package org.shoppingmall.user.global.oauth2.kakao.application;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.shoppingmall.user.domain.AuthProvider;
 import org.shoppingmall.user.domain.User;
 import org.shoppingmall.user.domain.UserStatus;
 import org.shoppingmall.user.domain.repository.UserRepository;
@@ -74,7 +75,7 @@ public class KakaoLoginService {
                     + ", Response: " + responseEntity.getBody());
         }
     }
-    public User processLogin(String code) {
+    public User processLogin(String code, UserStatus userStatus) {
         String accessToken = getKakaoAccessToken(code);
 
         KakaoUserInfo kakaoUserInfo = getUserInfoFromKakao(accessToken);
@@ -88,7 +89,8 @@ public class KakaoLoginService {
                         .email(kakaoUserInfo.getKakao_account().getEmail())
                         .name(kakaoUserInfo.getProperties().getNickname())
                         .pictureUrl(kakaoUserInfo.getKakao_account().getProfile().getProfile_image_url())
-                        .userStatus(UserStatus.KAKAO_USER)
+                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .authProvider(AuthProvider.KAKAO)
                         .build())
         );
     }

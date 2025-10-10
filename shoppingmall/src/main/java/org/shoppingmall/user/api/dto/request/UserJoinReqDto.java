@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.shoppingmall.user.domain.AuthProvider;
 import org.shoppingmall.user.domain.User;
 import org.shoppingmall.user.domain.UserStatus;
 
@@ -35,6 +36,7 @@ public record UserJoinReqDto(
                         .birthDay(this.birthDay)
                         .address(this.address)
                         .userStatus(UserStatus.USER)
+                        .authProvider(AuthProvider.LOCAL)
                         .build();
         }
 }
