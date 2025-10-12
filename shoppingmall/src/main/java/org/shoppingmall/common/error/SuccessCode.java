@@ -40,7 +40,8 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     REVIEW_SAVE_SUCCESS(HttpStatus.CREATED, "리뷰가 성공적으로 저장되었습니다."),
     COMMENT_SAVE_SUCCESS(HttpStatus.CREATED,"댓글이 성공적으로 저장되었습니다."),
     EMAIL_AUTH_SUCCESS(HttpStatus.CREATED,"이메일 인증에 성공하였습니다."),
-    LIKE_SAVE_SUCCESS(HttpStatus.CREATED,"공감이 성공적으로 저장되었습니다.");
+    LIKE_SAVE_SUCCESS(HttpStatus.CREATED,"공감이 성공적으로 저장되었습니다."),
+    SELLER_REGISTER_SUCCESS(HttpStatus.CREATED, "판매자 정보가 등록되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

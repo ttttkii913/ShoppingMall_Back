@@ -5,6 +5,7 @@ import lombok.*;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.review.domain.Review;
+import org.shoppingmall.seller.domain.Seller;
 import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
 
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Seller seller;
+
     @Builder
     private User(String name, String password, String email, String phone, String birthDay, String address, String pictureUrl, UserStatus userStatus, AuthProvider authProvider, String accessToken, String refreshToken) {
         this.name = name;
@@ -94,5 +98,9 @@ public class User {
         this.userStatus = null;
         this.accessToken = null;
         this.refreshToken = null;
+    }
+
+    public void changeRole(UserStatus newUserStatus) {
+        this.userStatus = newUserStatus;
     }
 }

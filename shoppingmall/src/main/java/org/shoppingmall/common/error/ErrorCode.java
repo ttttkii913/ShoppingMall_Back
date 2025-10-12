@@ -40,6 +40,7 @@ public enum ErrorCode {
      * 400 BAD REQUEST
      */
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "유효성 검사에 실패하였습니다.", "BAD_REQUEST_400"),
+    ALREADY_SELLER(HttpStatus.BAD_REQUEST, "이미 존재하는 판매자입니다.", "BAD_REQUEST_400"),
     ALREADY_LIKE_PRODUCT(HttpStatus.BAD_REQUEST,"이미 공감을 누른 상품입니다.", "BAD_REQUEST_400"),
     EMAIL_AUTH_FAIL(HttpStatus.BAD_REQUEST,"이메일 인증에 실패하였습니다.", "BAD_REQUEST_400"),
     NOT_CHILD_COMMENT_HIERARCHY(HttpStatus.BAD_REQUEST,"대댓글의 대댓글은 허용하지 않습니다. BAD_REQUEST_400", "BAD_REQUEST_400");
