@@ -22,20 +22,11 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
-@Tag(name = "상품 API", description = "상품 CRUD API")
+@Tag(name = "상품 조회 API", description = "상품 조회 API")
 @CommonApiResponse
 public class ProductController {
 
     private final ProductService productService;
-
-    @Operation(summary = "판매자가 상품 등록", description = "판매자가 상품을 등록합니다.")
-    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponseTemplate<ProductInfoResDto> productSave(@RequestPart("product") ProductSaveReqDto productSaveReqDto,
-                                                              @RequestParam(value = "productImage", required = false) MultipartFile productImage,
-                                                              Principal principal) throws IOException {
-        ProductInfoResDto productInfoResDto = productService.productSave(productSaveReqDto, productImage, principal);
-        return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_SAVE_SUCCESS, productInfoResDto);
-    }
 
     @Operation(summary = "메인 페이지 - 전체 상품 조회", description = "모든 사용자가 메인페이지에서 상품을 볼 수 있습니다.")
     @GetMapping("/all")
@@ -49,29 +40,5 @@ public class ProductController {
     public ApiResponseTemplate<ProductInfoResDto> getProductDetail(@RequestParam Long productId) {
         ProductInfoResDto productInfoResDto = productService.getProductDetail(productId);
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productInfoResDto);
-    }
-
-    @Operation(summary = "판매자가 상품 수정", description = "판매자가 상품을 수정합니다.")
-    @PatchMapping(value = "/update/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponseTemplate<ProductInfoResDto> productUpdate(@PathVariable("productId") Long productId,
-                                                                @RequestPart ProductUpdateReqDto productUpdateReqDto,
-                                                                @RequestParam(value = "productImage", required = false) MultipartFile productImage,
-                                                                Principal principal) throws IOException {
-        ProductInfoResDto productInfoResDto = productService.productUpdate(productId, productUpdateReqDto, productImage, principal);
-        return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_UPDATE_SUCCESS, productInfoResDto);
-    }
-
-    @Operation(summary = "상품 옵션 수정", description = "상품 옵션 정보를 수정합니다.")
-    @PatchMapping("/update")
-    public ApiResponseTemplate<String> updateProductOption(@RequestBody ProductOptionUpdateReqDto reqDto) {
-        productService.updateProductOption(reqDto);
-        return ApiResponseTemplate.successWithNoContent(SuccessCode.PRODUCT_OPTION_UPDATE_SUCCESS);
-    }
-
-    @Operation(summary = "판매자가 상품 삭제", description = "판매자가 상품을 삭제합니다.")
-    @DeleteMapping("/delete")
-    public ApiResponseTemplate<String> productDelete(@RequestParam Long productId, Principal principal) {
-        productService.productDelete(productId, principal);
-        return ApiResponseTemplate.successWithNoContent(SuccessCode.PRODUCT_DELETE_SUCCESS);
     }
 }
