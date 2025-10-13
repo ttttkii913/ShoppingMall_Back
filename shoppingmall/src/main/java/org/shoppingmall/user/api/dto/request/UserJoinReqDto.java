@@ -35,7 +35,7 @@ public record UserJoinReqDto(
                         .phone(this.phone)
                         .birthDay(this.birthDay)
                         .address(this.address)
-                        .userStatus(UserStatus.USER)
+                        .userStatus(UserStatus.ROLE_USER)
                         .authProvider(AuthProvider.LOCAL)
                         .build();
         }

@@ -89,7 +89,7 @@ public class KakaoLoginService {
                         .email(kakaoUserInfo.getKakao_account().getEmail())
                         .name(kakaoUserInfo.getProperties().getNickname())
                         .pictureUrl(kakaoUserInfo.getKakao_account().getProfile().getProfile_image_url())
-                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .userStatus(userStatus == UserStatus.ROLE_SELLER ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER)
                         .authProvider(AuthProvider.KAKAO)
                         .build())
         );

@@ -1,6 +1,7 @@
 package org.shoppingmall.seller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.config.CommonApiResponse;
@@ -19,6 +20,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/seller")
 @CommonApiResponse
+@Tag(name = "판매자 정보 등록 API", description = "판매자 정보 등록 API")
 public class SellerController {
 
     private final SellerService sellerService;

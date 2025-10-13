@@ -96,7 +96,7 @@ public class GoogleLoginService {
                         .email(userInfo.getEmail())
                         .name(userInfo.getName())
                         .pictureUrl(userInfo.getPictureUrl())
-                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .userStatus(userStatus == UserStatus.ROLE_SELLER ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER)
                         .authProvider(AuthProvider.GOOGLE)
                         .build())
         );

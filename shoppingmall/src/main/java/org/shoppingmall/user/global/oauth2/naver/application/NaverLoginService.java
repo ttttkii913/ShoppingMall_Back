@@ -94,7 +94,7 @@ public class NaverLoginService {
                         .email(naverUserInfo.getResponse().getEmail())
                         .name(naverUserInfo.getResponse().getNickname())
                         .pictureUrl(naverUserInfo.getResponse().getPictureUrl())
-                        .userStatus(userStatus == UserStatus.SELLER ? UserStatus.SELLER : UserStatus.USER)
+                        .userStatus(userStatus == UserStatus.ROLE_SELLER ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER)
                         .authProvider(AuthProvider.NAVER)
                         .build())
         );

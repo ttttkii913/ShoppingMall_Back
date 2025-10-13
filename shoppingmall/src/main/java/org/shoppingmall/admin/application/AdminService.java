@@ -31,7 +31,7 @@ public class AdminService {
 
         // 판매자로 변경
         User user = seller.getUser();
-        user.changeRole(UserStatus.SELLER);
+        user.changeRole(UserStatus.ROLE_SELLER);
 
         userRepository.save(user);
 

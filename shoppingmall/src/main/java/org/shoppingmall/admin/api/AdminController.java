@@ -1,6 +1,7 @@
 package org.shoppingmall.admin.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.admin.application.AdminService;
 import org.shoppingmall.common.config.ApiResponseTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 @CommonApiResponse
 @RequiredArgsConstructor
+@Tag(name = "관리자 API", description = "관리자 관련 API")
 public class AdminController {
 
     private final AdminService adminService;

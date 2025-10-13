@@ -2,5 +2,5 @@ package org.shoppingmall.user.domain;
 
 public enum UserStatus {
 
-        USER, SELLER, ADMIN
+        ROLE_USER, ROLE_PENDING, ROLE_SELLER, ROLE_ADMIN
 }
