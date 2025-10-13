@@ -17,6 +17,8 @@ import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.productoption.domain.repository.ProductOptionRepository;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.review.domain.repository.ReviewRepository;
+import org.shoppingmall.seller.domain.Seller;
+import org.shoppingmall.seller.domain.repository.SellerRepository;
 import org.shoppingmall.user.domain.User;
 import org.shoppingmall.user.domain.repository.UserRepository;
 import org.springframework.stereotype.Component;
@@ -35,6 +37,7 @@ public class EntityFinderException {
     private final OrderRepository orderRepository;
     private final CommentRepository commentRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final SellerRepository sellerRepository;
 
     public User getUserFromPrincipal(Principal principal) {
         Long id = Long.parseLong(principal.getName());
@@ -89,5 +92,11 @@ public class EntityFinderException {
         return productOptionRepository.findById(productOptionId).orElseThrow(
                 () -> new CustomException(ErrorCode.PRODUCT_OPTION_NOT_FOUND_EXCEPTION,
                         ErrorCode.PRODUCT_OPTION_NOT_FOUND_EXCEPTION.getMessage() + productOptionId));
+    }
+
+    public Seller getSellerById(Long sellerId) {
+        return sellerRepository.findById(sellerId).orElseThrow(
+                () -> new CustomException(ErrorCode.SELLER_NOT_FOUND_EXCEPTION,
+                        ErrorCode.SELLER_NOT_FOUND_EXCEPTION.getMessage()));
     }
 }
