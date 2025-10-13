@@ -22,8 +22,18 @@ public class Seller {
     private String bankName;
     private String accountNumber;
 
+    @Enumerated(EnumType.STRING)
+    private SellerStatus sellerStatus;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void sellerApprove() {
+        this.sellerStatus = SellerStatus.APPROVED;
+    }
+
+    public void sellerReject() {
+        this.sellerStatus = SellerStatus.REJECTED;
+    }
 }
