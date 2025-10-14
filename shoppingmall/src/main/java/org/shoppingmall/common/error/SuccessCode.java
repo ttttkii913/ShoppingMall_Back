@@ -18,6 +18,8 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     REVIEW_UPDATE_SUCCESS(HttpStatus.OK, "리뷰가 성공적으로 수정되었습니다."),
     COMMENT_UPDATE_SUCCESS(HttpStatus.OK, "댓글이 성공적으로 수정되었습니다."),
     USER_INFO_UPDATE_SUCCESS(HttpStatus.OK, "사용자의 정보가 성공적으로 변경되었습니다."),
+    USER_EMAIL_FIND_SUCCESS(HttpStatus.OK, "사용자의 이메일 정보를 성공적으로 조회하였습니다."),
+    USER_PASSWORD_RESET_SUCCESS(HttpStatus.OK, "사용자의 비밀번호를 성공적으로 변경하였습니다."),
 
     PRODUCT_DELETE_SUCCESS(HttpStatus.OK, "상품이 성공적으로 삭제되었습니다."),
     CART_DELETE_SUCCESS( HttpStatus.OK, "장바구니가 성공적으로 삭제되었습니다."),
