@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.config.ApiResponseTemplate;
 import org.shoppingmall.common.config.CommonApiResponse;
 import org.shoppingmall.common.error.SuccessCode;
-import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
-import org.shoppingmall.user.api.dto.request.UserJoinReqDto;
-import org.shoppingmall.user.api.dto.request.UserLoginReqDto;
+import org.shoppingmall.user.api.dto.request.*;
 import org.shoppingmall.user.api.dto.response.UserInfoResDto;
 import org.shoppingmall.user.api.dto.response.UserLoginResDto;
 import org.shoppingmall.user.application.UserService;
@@ -46,5 +44,19 @@ public class UserController {
     private ApiResponseTemplate<String> userInfoDelete(Principal principal) {
         userService.userInfoDelete(principal);
         return ApiResponseTemplate.successWithNoContent(SuccessCode.MEMBER_INFO_DELETE);
+    }
+
+    @Operation(summary = "이메일 찾기", description = "사용자의 이름으로 가입한 이메일 정보를 찾습니다.")
+    @PostMapping("/email")
+    private ApiResponseTemplate<UserInfoResDto> userEmailInfo(FindEmailReqDto findEmailReqDto) {
+        UserInfoResDto userInfoResDto = userService.userEmailInfo(findEmailReqDto);
+        return ApiResponseTemplate.successResponse(SuccessCode.USER_EMAIL_FIND_SUCCESS, userInfoResDto);
+    }
+
+    @Operation(summary = "비밀번호 재설정", description = "사용자의 이메일로 인증한 후 비밀번호를 새로 변경합니다. + 비밀번호 확인 필드")
+    @PostMapping("/reset/password")
+    private ApiResponseTemplate<UserInfoResDto> resetPassword(ResetPasswordReqDto resetPasswordReqDto) {
+        UserInfoResDto userInfoResDto = userService.resetPassword(resetPasswordReqDto);
+        return ApiResponseTemplate.successResponse(SuccessCode.USER_PASSWORD_RESET_SUCCESS, userInfoResDto);
     }
 }

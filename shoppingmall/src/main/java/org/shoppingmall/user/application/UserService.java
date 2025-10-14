@@ -2,9 +2,9 @@ package org.shoppingmall.user.application;
 
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.common.EntityFinderException;
-import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
-import org.shoppingmall.user.api.dto.request.UserJoinReqDto;
-import org.shoppingmall.user.api.dto.request.UserLoginReqDto;
+import org.shoppingmall.common.error.ErrorCode;
+import org.shoppingmall.common.exception.CustomException;
+import org.shoppingmall.user.api.dto.request.*;
 import org.shoppingmall.user.api.dto.response.UserInfoResDto;
 import org.shoppingmall.user.api.dto.response.UserLoginResDto;
 import org.shoppingmall.user.domain.User;
@@ -76,6 +76,7 @@ public class UserService {
     }
 
     // 사용자 정보 수정
+    @Transactional
     public UserInfoResDto userInfoUpdate(UserInfoUpdateReqDto userInfoUpdateReqDto, Principal principal) {
         Long id = Long.parseLong(principal.getName());
         User user = entityFinder.getUserById(id);
@@ -89,6 +90,34 @@ public class UserService {
         }
 
         userRepository.save(user);
+        return UserInfoResDto.from(user);
+    }
+
+    // 이메일 찾기
+    public UserInfoResDto userEmailInfo(FindEmailReqDto findEmailReqDto) {
+        User user = userRepository.findByName(findEmailReqDto.name()).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND_EXCEPTION,
+                        ErrorCode.USER_NOT_FOUND_EXCEPTION.getMessage()));
+
+        return UserInfoResDto.from(user);
+    }
+
+    // 비밀번호 재설정
+    @Transactional
+    public UserInfoResDto resetPassword(ResetPasswordReqDto resetPasswordReqDto) {
+        User user = userRepository.findByEmail(resetPasswordReqDto.email()).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND_EXCEPTION,
+                        ErrorCode.USER_NOT_FOUND_EXCEPTION.getMessage())
+        );
+
+        // password confirm
+        if (!resetPasswordReqDto.newPassword().equals(resetPasswordReqDto.confirmPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_MATCH_FAIL, ErrorCode.PASSWORD_MATCH_FAIL.getMessage());
+        }
+
+        user.changePassword(resetPasswordReqDto.newPassword(), passwordEncoder);
+        userRepository.save(user);
+
         return UserInfoResDto.from(user);
     }
 }

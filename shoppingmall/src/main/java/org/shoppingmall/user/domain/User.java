@@ -7,6 +7,7 @@ import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.seller.domain.Seller;
 import org.shoppingmall.user.api.dto.request.UserInfoUpdateReqDto;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +103,9 @@ public class User {
 
     public void changeRole(UserStatus newUserStatus) {
         this.userStatus = newUserStatus;
+    }
+
+    public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(newPassword);
     }
 }
