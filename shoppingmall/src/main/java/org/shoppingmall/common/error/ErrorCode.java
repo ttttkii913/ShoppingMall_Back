@@ -24,6 +24,7 @@ public enum ErrorCode {
     LIKE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"공감을 누르지 않은 상품입니다.", "NOT_FOUND_404"),
     PRODUCT_OPTION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"상품 옵션을 찾을 수 없습니다", "NOT_FOUND_404"),
     SELLER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"판매자를 찾을 수 없습니다", "NOT_FOUND_404"),
+    NOTIFICATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"알림을 찾을 수 없습니다", "NOT_FOUND_404"),
     NO_USER_LIKE_PRODUCT_EXCEPTION(HttpStatus.NOT_FOUND,"아직 공감을 누른 상품이 없습니다.", "NOT_FOUND_404"),
 
     // 401 UNAUTHORIZED

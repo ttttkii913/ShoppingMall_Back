@@ -27,6 +27,7 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     COMMENT_DELETE_SUCCESS(HttpStatus.OK, "댓글이 성공적으로 삭제되었습니다."),
     ORDER_DELETE_SUCCESS(HttpStatus.OK, "주문이 성공적으로 삭제되었습니다."),
     LIKE_DELETE_SUCCESS(HttpStatus.OK, "공감이 성공적으로 삭제되었습니다."),
+    NOTIFICATION_DELETE_SUCCESS(HttpStatus.OK, "알림이 성공적으로 삭제되었습니다."),
 
     USER_SIGNUP_SUCCESS(HttpStatus.OK, "회원가입에 성공하였습니다."),
     USER_LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공하였습니다."),
@@ -43,6 +44,7 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     COMMENT_SAVE_SUCCESS(HttpStatus.CREATED,"댓글이 성공적으로 저장되었습니다."),
     EMAIL_AUTH_SUCCESS(HttpStatus.CREATED,"이메일 인증에 성공하였습니다."),
     LIKE_SAVE_SUCCESS(HttpStatus.CREATED,"공감이 성공적으로 저장되었습니다."),
+    NOTIFICATION_SAVE_SUCCESS(HttpStatus.CREATED,"알람이 성공적으로 저장되었습니다."),
     SELLER_REGISTER_SUCCESS(HttpStatus.CREATED, "판매자 정보가 등록되었습니다. 관리자의 승인 필요"),
     SELLER_APPROVE_SUCCESS(HttpStatus.CREATED, "판매자 정보가 승인되었습니다."),
     SELLER_REJECT_SUCCESS(HttpStatus.CREATED, "판매자 정보가 거절되었습니다.");

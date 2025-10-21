@@ -9,6 +9,8 @@ import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
 import org.shoppingmall.like.domain.Like;
 import org.shoppingmall.like.domain.repository.LikeRepository;
+import org.shoppingmall.notification.domain.Notification;
+import org.shoppingmall.notification.domain.repository.NotificationRepository;
 import org.shoppingmall.order.domain.Order;
 import org.shoppingmall.order.domain.repository.OrderRepository;
 import org.shoppingmall.product.domain.Product;
@@ -38,6 +40,7 @@ public class EntityFinderException {
     private final CommentRepository commentRepository;
     private final ProductOptionRepository productOptionRepository;
     private final SellerRepository sellerRepository;
+    private final NotificationRepository notificationRepository;
 
     public User getUserFromPrincipal(Principal principal) {
         Long id = Long.parseLong(principal.getName());
@@ -98,5 +101,11 @@ public class EntityFinderException {
         return sellerRepository.findById(sellerId).orElseThrow(
                 () -> new CustomException(ErrorCode.SELLER_NOT_FOUND_EXCEPTION,
                         ErrorCode.SELLER_NOT_FOUND_EXCEPTION.getMessage()));
+    }
+
+    public Notification getNotificationById(Long notificationId) {
+        return notificationRepository.findById(notificationId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOTIFICATION_NOT_FOUND_EXCEPTION,
+                        ErrorCode.NOTIFICATION_NOT_FOUND_EXCEPTION.getMessage() + notificationId));
     }
 }

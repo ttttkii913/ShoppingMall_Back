@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/swagger-ui/**","/v3/api-docs/**", "/swagger-resources/**").permitAll()
                         .requestMatchers("/login/**","/user/**").permitAll()
+                        .requestMatchers("/notification/subscribe/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/seller/**").hasRole("SELLER")
                         .anyRequest().authenticated()
