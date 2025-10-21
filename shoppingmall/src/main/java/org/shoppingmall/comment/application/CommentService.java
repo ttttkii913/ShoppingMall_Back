@@ -11,6 +11,8 @@ import org.shoppingmall.comment.domain.repository.CommentRepository;
 import org.shoppingmall.common.EntityFinderException;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
+import org.shoppingmall.notification.api.dto.request.NotificationReqDto;
+import org.shoppingmall.notification.application.NotificationService;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.domain.User;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final EntityFinderException entityFinder;
+    private final NotificationService notificationService;
 
     // 댓글 전체 조회
     public CommentListResDto getCommentList(Long reviewId, Principal principal) {
@@ -72,6 +75,16 @@ public class CommentService {
 
         // comment count update
         review.updateCommentCount(1);
+
+        // 댓글 생성 후 알림 전송
+        if (!review.getUser().getId().equals(user.getId())) {
+            NotificationReqDto notificationReqDto = new NotificationReqDto(
+                    review.getUser().getId(),
+                    user.getName() + "님이 \"" + review.getTitle(),
+                    "\" 리뷰에 댓글을 남겼습니다."
+            );
+            notificationService.createNotification(notificationReqDto);
+        }
 
         return CommentInfoResDto.from(savedComment);
     }

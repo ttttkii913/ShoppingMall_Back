@@ -6,12 +6,13 @@ import java.time.LocalDateTime;
 
 public record NotificationReqDto(
         Long userId,
-        String message
+        String userName,
+        String message // ex) ~님이 댓글을 남겼습니다
 ) {
     public Notification toEntity() {
         return Notification.builder()
                 .userId(userId)
-                .message(message)
+                .message(userName + message)
                 .isRead(false)
                 .notificationCreatedAt(LocalDateTime.now())
                 .build();
