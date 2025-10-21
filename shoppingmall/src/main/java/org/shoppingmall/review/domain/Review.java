@@ -38,7 +38,7 @@ public class Review {
     private Product product;
 
     @Column(name = "comment_count", nullable = false)
-    private Long commentCount;
+    private Long commentCount = 0L;
 
     @Builder
     public Review(String title, String content, String reviewImage, LocalDate createdAt, User user, Product product) {

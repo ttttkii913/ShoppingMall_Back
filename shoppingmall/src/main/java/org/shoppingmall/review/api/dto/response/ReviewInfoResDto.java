@@ -5,6 +5,7 @@ import org.shoppingmall.review.domain.Review;
 
 @Builder
 public record ReviewInfoResDto(
+        Long reviewId,
         Long productId,
         Long userId,
         String title,
@@ -14,6 +15,7 @@ public record ReviewInfoResDto(
     // product랑 매핑 연결 안 되어있으면 productId 안 불러와짐
     public static ReviewInfoResDto from(Review review) {
         return ReviewInfoResDto.builder()
+                .reviewId(review.getId())
                 .productId(review.getProduct().getId())
                 .userId(review.getUser().getId())
                 .title(review.getTitle())
