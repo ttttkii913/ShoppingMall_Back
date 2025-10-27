@@ -41,4 +41,11 @@ public class ProductController {
         ProductInfoResDto productInfoResDto = productService.getProductDetail(productId);
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productInfoResDto);
     }
+
+    @Operation(summary = "메인 페이지 - 카테고리별 상품 리스트 조회", description = "모든 사용자가 카테고리별 상품 리스트를 조회합니다.")
+    @GetMapping("/detail")
+    public ApiResponseTemplate<ProductListResDto> getProductCategory(@RequestParam Long categoryId) {
+        ProductListResDto productListResDto = productService.getProductCategory(categoryId);
+        return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productListResDto);
+    }
 }

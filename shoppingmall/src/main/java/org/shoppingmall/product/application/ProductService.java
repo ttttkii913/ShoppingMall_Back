@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,6 +90,16 @@ public class ProductService {
     public ProductInfoResDto getProductDetail(Long productId) {
         Product product = entityFinder.getProductById(productId);
         return ProductInfoResDto.from(product);
+    }
+
+    // 카테고리별 상품 리스트 조회
+    public ProductListResDto getProductCategory(Long categoryId) {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+        List<ProductInfoResDto> productInfoResDtoList = products.stream()
+                .map(ProductInfoResDto::from)
+                .collect(Collectors.toList());
+
+        return new ProductListResDto(productInfoResDtoList);
     }
 
     // 상품 수정
