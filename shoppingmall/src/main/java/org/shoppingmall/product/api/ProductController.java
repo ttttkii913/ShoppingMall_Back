@@ -42,10 +42,10 @@ public class ProductController {
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productInfoResDto);
     }
 
-    @Operation(summary = "메인 페이지 - 카테고리별 상품 리스트 조회", description = "모든 사용자가 카테고리별 상품 리스트를 조회합니다.")
-    @GetMapping("/detail")
-    public ApiResponseTemplate<ProductListResDto> getProductCategory(@RequestParam Long categoryId) {
-        ProductListResDto productListResDto = productService.getProductCategory(categoryId);
+    @Operation(summary = "메인 페이지 - 카테고리별 상품 리스트 조회", description = "모든 사용자가 카테고리별 상품 리스트를 최신순, 인기순으로 조회합니다.")
+    @GetMapping("/category")
+    public ApiResponseTemplate<ProductListResDto> getProductCategory(@RequestParam Long categoryId, @RequestParam(defaultValue = "latest") String sort) {
+        ProductListResDto productListResDto = productService.getProductCategory(categoryId, sort);
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productListResDto);
     }
 }

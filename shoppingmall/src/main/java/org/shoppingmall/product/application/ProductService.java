@@ -20,6 +20,7 @@ import org.shoppingmall.product.domain.repository.ProductRepository;
 import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.productoption.domain.repository.ProductOptionRepository;
 import org.shoppingmall.user.domain.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -93,8 +94,16 @@ public class ProductService {
     }
 
     // 카테고리별 상품 리스트 조회
-    public ProductListResDto getProductCategory(Long categoryId) {
-        List<Product> products = productRepository.findByCategoryId(categoryId);
+    public ProductListResDto getProductCategory(Long categoryId, String sort) {
+        Sort sortOrder;
+
+        if ("popular".equals(sort)) {
+            sortOrder = Sort.by(Sort.Direction.DESC, "likeCount");
+        } else {
+            sortOrder = Sort.by(Sort.Direction.DESC, "productCreatedAt");
+        }
+
+        List<Product> products = productRepository.findByCategoryId(categoryId, sortOrder);
         List<ProductInfoResDto> productInfoResDtoList = products.stream()
                 .map(ProductInfoResDto::from)
                 .collect(Collectors.toList());

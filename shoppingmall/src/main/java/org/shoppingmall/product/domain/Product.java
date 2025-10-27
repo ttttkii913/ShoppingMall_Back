@@ -11,7 +11,9 @@ import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
 import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.domain.User;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,9 @@ public class Product {
     @Column(name = "like_count")
     private Integer likeCount = 0;
 
+    @Column(name = "product_createdAt")
+    private LocalDate productCreatedAt;
+
     // fk
     // 하나의 카테고리에 여러 개의 상품이 있다.
     @ManyToOne
@@ -66,7 +71,7 @@ public class Product {
     private List<ProductOption> productOptions = new ArrayList<>();
 
     @Builder
-    public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category) {
+    public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category, LocalDate productCreatedAt) {
         this.name = name;
         this.price = price;
         this.info = info;
@@ -75,6 +80,7 @@ public class Product {
         this.productImage = productImage;
         this.user = user;
         this.category = category;
+        this.productCreatedAt = LocalDate.now();
     }
 
     public void update(ProductUpdateReqDto productUpdateReqDto) {
