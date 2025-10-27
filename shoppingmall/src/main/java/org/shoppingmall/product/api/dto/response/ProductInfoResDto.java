@@ -5,6 +5,7 @@ import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.product.domain.ProductStatus;
 import org.shoppingmall.productoption.api.dto.response.ProductOptionInfoResDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ public record ProductInfoResDto(
         String info,
         Integer stock,
         ProductStatus productStatus,
+        Integer likeCount,
+        LocalDate productCreatedAt,
         List<ProductOptionInfoResDto> options
 ) {
     public static ProductInfoResDto from(Product product) {
@@ -39,6 +42,8 @@ public record ProductInfoResDto(
                 .info(product.getInfo())
                 .stock(product.getStock())
                 .productStatus(product.getProductStatus())
+                .likeCount(product.getLikeCount())
+                .productCreatedAt(product.getProductCreatedAt())
                 .options(options)
                 .build();
     }
