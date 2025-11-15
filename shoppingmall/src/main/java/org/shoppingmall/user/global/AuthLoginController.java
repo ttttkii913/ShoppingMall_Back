@@ -30,16 +30,16 @@ public class AuthLoginController {
 
     @Operation(summary = "구글 로그인", description = "구글 로그인 콜백 api입니다.")
     @GetMapping("/google")
-    public ResponseEntity<ApiResponseTemplate<LoginResDto>> googleCallback(@RequestParam String code, @RequestParam(defaultValue = "USER") String type) {
-        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
+    public ResponseEntity<ApiResponseTemplate<LoginResDto>> googleCallback(@RequestParam String code, @RequestParam String state) {
+        UserStatus status = state.equalsIgnoreCase("SELLER") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
         User user = googleLoginService.processLogin(code, status);
         return authLoginService.loginSuccess(user);
     }
 
     @Operation(summary = "카카오 로그인", description = "카카오 로그인 콜백 api입니다.")
     @GetMapping("/kakao")
-    public ResponseEntity<ApiResponseTemplate<LoginResDto>> kakaoCallback(@RequestParam String code, @RequestParam(defaultValue = "USER") String type) {
-        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
+    public ResponseEntity<ApiResponseTemplate<LoginResDto>> kakaoCallback(@RequestParam String code, @RequestParam String state) {
+        UserStatus status = state.equalsIgnoreCase("SELLER") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
         User user = kakaoLoginService.processLogin(code, status);
         return authLoginService.loginSuccess(user);
     }
@@ -47,7 +47,7 @@ public class AuthLoginController {
     @Operation(summary = "네이버 로그인", description = "네이버 로그인 콜백 api입니다.")
     @GetMapping("/naver")
     public ResponseEntity<ApiResponseTemplate<LoginResDto>> naverCallback(@RequestParam String code, @RequestParam String state, @RequestParam(defaultValue = "USER") String type) {
-        UserStatus status = type.equalsIgnoreCase("seller") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
+        UserStatus status = type.equalsIgnoreCase("SELLER") ? UserStatus.ROLE_SELLER : UserStatus.ROLE_USER;
         User user = naverLoginService.processLogin(code, state, status);
         return authLoginService.loginSuccess(user);
     }

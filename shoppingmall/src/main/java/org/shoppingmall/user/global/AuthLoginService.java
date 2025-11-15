@@ -51,7 +51,7 @@ public class AuthLoginService {
         System.out.println("cookieSecure = " + cookieSecure);
         System.out.println("cookieSameSite = " + cookieSameSite);
 
-        LoginResDto loginResDto = new LoginResDto(accessToken, user.getId());
+        LoginResDto loginResDto = new LoginResDto(accessToken, user.getId(), user.getUserStatus());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
