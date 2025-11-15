@@ -30,10 +30,6 @@ public class SellerService {
     public SellerInfoResDto registerSeller(SellerInfoReqDto sellerInfoReqDto, Principal principal) {
         User user = entityFinder.getUserFromPrincipal(principal);
 
-        if (user.getUserStatus() == UserStatus.ROLE_SELLER) {
-            throw new CustomException(ErrorCode.ALREADY_SELLER, ErrorCode.ALREADY_SELLER.getMessage());
-        }
-
         // 판매자 정보 생성
         Seller seller = Seller.builder()
                 .businessName(sellerInfoReqDto.businessName())
