@@ -26,6 +26,7 @@ public enum ErrorCode {
     SELLER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"판매자를 찾을 수 없습니다", "NOT_FOUND_404"),
     NOTIFICATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"알림을 찾을 수 없습니다", "NOT_FOUND_404"),
     NO_USER_LIKE_PRODUCT_EXCEPTION(HttpStatus.NOT_FOUND,"아직 공감을 누른 상품이 없습니다.", "NOT_FOUND_404"),
+    WEATHER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND,"해당 지역의 날씨 정보를 찾을 수 없습니다.", "NOT_FOUND_404"),
 
     // 401 UNAUTHORIZED
     NO_AUTHORIZATION_EXCEPTION(HttpStatus.UNAUTHORIZED,"권한이 없습니다.", "UNAUTHORIZED_401"),
