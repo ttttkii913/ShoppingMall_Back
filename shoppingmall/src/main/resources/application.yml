@@ -85,3 +85,11 @@ imp:
     client-code: ${IMP_API_CLIENT_CODE}
     key: ${IMP_API_KEY}
     secret-key: ${IMP_API_SECRET_KEY}
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+
+openweather:
+  api:
+    key: ${OPENWEATHERMAP_API_KEY}
