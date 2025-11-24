@@ -9,7 +9,6 @@ public record UserInfoUpdateReqDto(
         @Size(min = 2, max = 15, message = "2자 이상, 15자 이하로 입력하세요.")
         String name,
 
-        @NotBlank(message = "비밀번호를 필수로 입력해야 합니다.")
         @Size(min = 8, message = "8자 이상 입력하세요.")
         String password,
 
