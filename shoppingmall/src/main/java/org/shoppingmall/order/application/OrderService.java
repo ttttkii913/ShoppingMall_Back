@@ -6,6 +6,8 @@ import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
 import org.shoppingmall.cartItem.domain.CartItem;
 import org.shoppingmall.common.EntityFinderException;
+import org.shoppingmall.common.error.ErrorCode;
+import org.shoppingmall.common.exception.CustomException;
 import org.shoppingmall.order.api.dto.response.OrderResDto;
 import org.shoppingmall.order.domain.Order;
 import org.shoppingmall.order.domain.repository.OrderRepository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -91,4 +94,31 @@ public class OrderService {
 
     }
 
+    // 전체 주문 목록 조회
+    @Transactional(readOnly = true)
+    public List<OrderResDto> getAllOrders(Principal principal) {
+        User user = entityFinder.getUserFromPrincipal(principal);
+
+        List<Order> orders = orderRepository.findAllByUser(user);
+
+        return orders.stream()
+                .map(OrderResDto::from)
+                .toList();
+    }
+
+    // 상세 주문 목록 조회
+    @Transactional(readOnly = true)
+    public OrderResDto getOrderDetail(Long orderId, Principal principal) {
+        User user = entityFinder.getUserFromPrincipal(principal);
+
+        Order order = entityFinder.getOrderById(orderId);
+
+        // 본인 주문인지 확인
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.NO_AUTHORIZATION_EXCEPTION
+                    , ErrorCode.NO_AUTHORIZATION_EXCEPTION.getMessage());
+        }
+
+        return OrderResDto.from(order);
+    }
 }
