@@ -3,6 +3,7 @@ package org.shoppingmall.user.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.shoppingmall.cart.domain.Cart;
+import org.shoppingmall.chat.domain.ChatRoom;
 import org.shoppingmall.product.domain.Product;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.seller.domain.Seller;
@@ -56,6 +57,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Seller seller;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoom> chatRooms;
 
     @Builder
     private User(String name, String password, String email, String phone, String birthDay, String address, String pictureUrl, UserStatus userStatus, AuthProvider authProvider, String accessToken, String refreshToken) {
