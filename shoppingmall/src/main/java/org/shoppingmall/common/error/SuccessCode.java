@@ -47,7 +47,9 @@ public enum SuccessCode {   // Success 상태와 메세지, 코드를 정의
     NOTIFICATION_SAVE_SUCCESS(HttpStatus.CREATED,"알람이 성공적으로 저장되었습니다."),
     SELLER_REGISTER_SUCCESS(HttpStatus.CREATED, "판매자 정보가 등록되었습니다. 관리자의 승인 필요"),
     SELLER_APPROVE_SUCCESS(HttpStatus.CREATED, "판매자 정보가 승인되었습니다."),
-    SELLER_REJECT_SUCCESS(HttpStatus.CREATED, "판매자 정보가 거절되었습니다.");
+    SELLER_REJECT_SUCCESS(HttpStatus.CREATED, "판매자 정보가 거절되었습니다."),
+    CHAT_ROOM_SAVE_SUCCESS(HttpStatus.CREATED, "채팅방이 생성되었습니다."),
+    CHAT_MESSAGE_SAVE_SUCCESS(HttpStatus.CREATED, "메세지가 전송되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
