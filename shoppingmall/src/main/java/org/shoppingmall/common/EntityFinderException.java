@@ -3,6 +3,8 @@ package org.shoppingmall.common;
 import lombok.RequiredArgsConstructor;
 import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.cart.domain.repository.CartRepository;
+import org.shoppingmall.chat.domain.ChatRoom;
+import org.shoppingmall.chat.domain.repository.ChatRoomRepository;
 import org.shoppingmall.comment.domain.Comment;
 import org.shoppingmall.comment.domain.repository.CommentRepository;
 import org.shoppingmall.common.error.ErrorCode;
@@ -41,6 +43,7 @@ public class EntityFinderException {
     private final ProductOptionRepository productOptionRepository;
     private final SellerRepository sellerRepository;
     private final NotificationRepository notificationRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     public User getUserFromPrincipal(Principal principal) {
         Long id = Long.parseLong(principal.getName());
@@ -107,5 +110,11 @@ public class EntityFinderException {
         return notificationRepository.findById(notificationId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOTIFICATION_NOT_FOUND_EXCEPTION,
                         ErrorCode.NOTIFICATION_NOT_FOUND_EXCEPTION.getMessage() + notificationId));
+    }
+
+    public ChatRoom getChatRoomById(Long roomId) {
+        return chatRoomRepository.findById(roomId).orElseThrow(
+                () -> new CustomException(ErrorCode.CHAT_NOT_FOUND_EXCEPTION,
+                        ErrorCode.CHAT_NOT_FOUND_EXCEPTION.getMessage()));
     }
 }
