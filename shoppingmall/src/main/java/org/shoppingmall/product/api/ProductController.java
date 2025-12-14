@@ -12,6 +12,7 @@ import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
 import org.shoppingmall.product.api.dto.response.ProductInfoResDto;
 import org.shoppingmall.product.api.dto.response.ProductListResDto;
 import org.shoppingmall.product.application.ProductService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +31,8 @@ public class ProductController {
 
     @Operation(summary = "메인 페이지 - 전체 상품 조회", description = "모든 사용자가 메인페이지에서 상품을 볼 수 있습니다.")
     @GetMapping("/all")
-    public ApiResponseTemplate<ProductListResDto> getProductList() {
-        ProductListResDto productListResDto = productService.getProductList();
+    public ApiResponseTemplate<ProductListResDto> getProductList(Pageable pageable) {
+        ProductListResDto productListResDto = productService.getProductList(pageable);
         return ApiResponseTemplate.successResponse(SuccessCode.GET_SUCCESS, productListResDto);
     }
 

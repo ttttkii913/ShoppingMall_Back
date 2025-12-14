@@ -20,6 +20,8 @@ import org.shoppingmall.product.domain.repository.ProductRepository;
 import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.productoption.domain.repository.ProductOptionRepository;
 import org.shoppingmall.user.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,8 +81,8 @@ public class ProductService {
     }
 
     // 전체 상품 조회
-    public ProductListResDto getProductList() {
-        List<Product> products = productRepository.findAll();
+    public ProductListResDto getProductList(Pageable pageable) {
+        Page<Product> products = productRepository.findAll(pageable);
         List<ProductInfoResDto> productInfoResDtoList = products.stream()
                 .map(ProductInfoResDto::from)
                 .toList();
