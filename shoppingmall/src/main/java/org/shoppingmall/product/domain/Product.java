@@ -5,13 +5,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.shoppingmall.cart.domain.Cart;
 import org.shoppingmall.category.domain.Category;
 import org.shoppingmall.product.api.dto.request.ProductUpdateReqDto;
 import org.shoppingmall.productoption.domain.ProductOption;
 import org.shoppingmall.review.domain.Review;
 import org.shoppingmall.user.domain.User;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,9 +35,6 @@ public class Product {
 
     @Column(name = "product_stock")
     private Integer stock;
-
-    @Column(name = "product_image")
-    private String productImage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")
@@ -70,14 +65,17 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOption> productOptions = new ArrayList<>();
 
+    // 한 개의 상품에는 여러 개의 상품 이미지가 있다.
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages = new ArrayList<>();
+
     @Builder
-    public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, String productImage, User user, Category category, LocalDate productCreatedAt) {
+    public Product(String name, Integer price, String info, Integer stock, ProductStatus productStatus, User user, Category category) {
         this.name = name;
         this.price = price;
         this.info = info;
         this.stock = stock;
         this.productStatus = productStatus;
-        this.productImage = productImage;
         this.user = user;
         this.category = category;
         this.productCreatedAt = LocalDate.now();
@@ -90,10 +88,6 @@ public class Product {
         this.productStatus = productUpdateReqDto.productStatus();
     }
 
-    public void updateImage(String productImage) {
-        this.productImage = productImage;
-    }
-
     public void increaseLikeCount() {
         this.likeCount++;
     }
@@ -102,5 +96,9 @@ public class Product {
         if (this.likeCount > 0) {
             this.likeCount--;
         }
+    }
+
+    public void addProductImage(ProductImage image) {
+        productImages.add(image);
     }
 }
