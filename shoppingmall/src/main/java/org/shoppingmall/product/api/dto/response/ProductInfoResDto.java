@@ -21,7 +21,8 @@ public record ProductInfoResDto(
         ProductStatus productStatus,
         Integer likeCount,
         LocalDate productCreatedAt,
-        List<ProductOptionInfoResDto> options
+        List<ProductOptionInfoResDto> options,
+        List<ProductImageResDto> images
 ) {
     public static ProductInfoResDto from(Product product) {
         List<ProductOptionInfoResDto> options = product.getProductOptions()
@@ -32,6 +33,11 @@ public record ProductInfoResDto(
                         opt.getProductOptionColor()
                 ))
                 .collect(Collectors.toList());
+
+        List<ProductImageResDto> images = product.getProductImages()
+                .stream()
+                .map(ProductImageResDto::from)
+                .toList();
 
         return ProductInfoResDto.builder()
                 .productId(product.getId())
@@ -45,6 +51,7 @@ public record ProductInfoResDto(
                 .likeCount(product.getLikeCount())
                 .productCreatedAt(product.getProductCreatedAt())
                 .options(options)
+                .images(images)
                 .build();
     }
 }

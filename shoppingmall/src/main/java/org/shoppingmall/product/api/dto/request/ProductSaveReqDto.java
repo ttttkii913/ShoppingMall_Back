@@ -18,16 +18,13 @@ public record ProductSaveReqDto(
         CategoryType categoryType,
         List<ProductOptionReqDto> options
 ) {
-    public Product toEntity(String productImage, User user, Category category) {
-        String image = (productImage != null) ? productImage : "";
-
+    public Product toEntity(User user, Category category) {
         return Product.builder()
                 .name(name)
                 .price(price)
                 .info(info)
                 .stock(stock)
                 .productStatus(productStatus)
-                .productImage(image)
                 .user(user)
                 .category(category)
                 .build();
