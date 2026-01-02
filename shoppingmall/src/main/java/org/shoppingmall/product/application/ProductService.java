@@ -9,6 +9,7 @@ import org.shoppingmall.common.config.S3Service;
 import org.shoppingmall.common.error.ErrorCode;
 import org.shoppingmall.common.exception.CustomException;
 import org.shoppingmall.common.exception.NotFoundException;
+import org.shoppingmall.product.domain.ProductImage;
 import org.shoppingmall.productoption.api.dto.request.ProductOptionReqDto;
 import org.shoppingmall.productoption.api.dto.request.ProductOptionUpdateReqDto;
 import org.shoppingmall.product.api.dto.request.ProductSaveReqDto;
@@ -46,22 +47,19 @@ public class ProductService {
     // 등록
     @Transactional
     public ProductInfoResDto productSave(ProductSaveReqDto productSaveReqDto
-                                    , MultipartFile multipartFile, Principal principal) throws IOException {
+                                    , MultipartFile mainImage,List<MultipartFile> subImages,
+                                         Principal principal) throws IOException {
+
         User user = entityFinder.getUserFromPrincipal(principal);
+
         // category 찾기
         CategoryType categoryType = productSaveReqDto.categoryType();
         Category category = categoryRepository.findByCategoryType(categoryType)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND_EXCEPTION,
                         ErrorCode.CATEGORY_NOT_FOUND_EXCEPTION.getMessage()));
 
-        // 이미지 업로드를 선택적으로 넘기면서 이미지가 있을 경우에만 업로드
-        String productImage = null; // 이미지 URL을 저장할 변수
-        if (multipartFile != null && !multipartFile.isEmpty()) {
-            productImage = s3Service.upload(multipartFile, "product");
-        }
-
-        // 저장
-        Product product = productSaveReqDto.toEntity(productImage, user, category);
+        // 상품 저장
+        Product product = productSaveReqDto.toEntity(user, category);
         productRepository.save(product);
 
         // 상품 옵션 저장
@@ -76,6 +74,10 @@ public class ProductService {
                 productOptionRepository.save(option);
             }
         }
+
+        // 이미지 저장
+        saveProductImages(product, mainImage, subImages);
+
         return ProductInfoResDto.from(product);
 
     }
@@ -115,7 +117,9 @@ public class ProductService {
 
     // 상품 수정
     @Transactional
-    public ProductInfoResDto productUpdate(Long productId, ProductUpdateReqDto productUpdateReqDto, MultipartFile productImage, Principal principal) throws IOException {
+    public ProductInfoResDto productUpdate(Long productId, ProductUpdateReqDto productUpdateReqDto,
+                                           MultipartFile newMainImage, List<MultipartFile> newSubImages,
+                                           Principal principal) throws IOException {
 
         Product product = entityFinder.getProductById(productId);
 
@@ -131,9 +135,10 @@ public class ProductService {
         product.update(productUpdateReqDto);
 
         // 이미지가 있을 경우 S3에 업로드하고 URL 업데이트
-        if (productImage != null && !productImage.isEmpty()) {
-            String imageUrl = s3Service.upload(productImage, "product");
-            product.updateImage(imageUrl);
+        if ((newMainImage != null && !newMainImage.isEmpty())
+                || (newSubImages != null && !newSubImages.isEmpty())) {
+            product.getProductImages().clear();
+            saveProductImages(product, newMainImage, newSubImages);
         }
 
         productRepository.save(product);
@@ -167,5 +172,29 @@ public class ProductService {
         }
 
         productRepository.delete(product);
+    }
+
+    // 다중 이미지 업로드 공통 메소드
+    private void saveProductImages(
+            Product product,
+            MultipartFile mainImage,
+            List<MultipartFile> subImages
+    ) throws IOException {
+
+        int order = 0;
+
+        if (mainImage != null && !mainImage.isEmpty()) {
+            String url = s3Service.upload(mainImage, "product");
+            product.addProductImage(new ProductImage(product, url, order++, true));
+        }
+
+        if (subImages != null) {
+            for (MultipartFile img : subImages) {
+                if (!img.isEmpty()) {
+                    String url = s3Service.upload(img, "product");
+                    product.addProductImage(new ProductImage(product, url, order++, false));
+                }
+            }
+        }
     }
 }
