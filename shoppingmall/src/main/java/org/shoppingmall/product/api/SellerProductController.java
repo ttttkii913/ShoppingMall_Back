@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,9 +34,10 @@ public class SellerProductController {
     @Operation(summary = "판매자가 상품 등록", description = "판매자가 상품을 등록합니다.")
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponseTemplate<ProductInfoResDto> productSave(@RequestPart("product") ProductSaveReqDto productSaveReqDto,
-                                                              @RequestParam(value = "productImage", required = false) MultipartFile productImage,
+                                                              @RequestPart MultipartFile mainImage,
+                                                              @RequestPart(required = false) List<MultipartFile> subImages,
                                                               Principal principal) throws IOException {
-        ProductInfoResDto productInfoResDto = productService.productSave(productSaveReqDto, productImage, principal);
+        ProductInfoResDto productInfoResDto = productService.productSave(productSaveReqDto, mainImage, subImages, principal);
         return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_SAVE_SUCCESS, productInfoResDto);
     }
 
@@ -50,9 +52,10 @@ public class SellerProductController {
     @PatchMapping(value = "/update/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponseTemplate<ProductInfoResDto> productUpdate(@PathVariable("productId") Long productId,
                                                                 @RequestPart ProductUpdateReqDto productUpdateReqDto,
-                                                                @RequestParam(value = "productImage", required = false) MultipartFile productImage,
+                                                                @RequestPart(required = false) MultipartFile mainImage,
+                                                                @RequestPart(required = false) List<MultipartFile> subImages,
                                                                 Principal principal) throws IOException {
-        ProductInfoResDto productInfoResDto = productService.productUpdate(productId, productUpdateReqDto, productImage, principal);
+        ProductInfoResDto productInfoResDto = productService.productUpdate(productId, productUpdateReqDto, mainImage, subImages, principal);
         return ApiResponseTemplate.successResponse(SuccessCode.PRODUCT_UPDATE_SUCCESS, productInfoResDto);
     }
 
