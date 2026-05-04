@@ -1,16 +1,26 @@
-FROM openjdk:17-jdk-bullseye
+# 1. 빌드 단계 (JDK 사용)
+FROM amazoncorretto:17 AS builder
 WORKDIR /app
 
-COPY shoppingmall/gradlew .
-COPY shoppingmall/gradlew.bat .
-COPY shoppingmall/build.gradle .
-COPY shoppingmall/settings.gradle .
-COPY shoppingmall/gradle gradle
-COPY shoppingmall/src src
+# 빌드 파일 복사
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+COPY src src
 
-RUN apt-get update && apt-get install -y findutils curl bash
-
+# 권한 부여 및 빌드 (bootJar)
 RUN chmod +x ./gradlew
-RUN ./gradlew build -x test
+RUN ./gradlew bootJar
 
-CMD ["java", "-jar", "build/libs/shoppingmall-0.0.1-SNAPSHOT.jar"]
+# 2. 실행 단계 (가벼운 설정을 위해 JDK 대신 일반 이미지 사용 가능)
+FROM amazoncorretto:17
+WORKDIR /app
+
+# 빌드 결과물 복사
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+EXPOSE 8080
+
+# 실행
+ENTRYPOINT ["java", "-jar", "app.jar"]
