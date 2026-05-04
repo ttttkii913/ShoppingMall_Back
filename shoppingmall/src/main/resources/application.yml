@@ -10,9 +10,9 @@ spring:
   profiles:
     active: prod
   datasource:
-    url: ${spring.datasource.url}
-    username: ${spring.datasource.username}
-    password: ${spring.datasource.password}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
@@ -59,15 +59,15 @@ kakao:
   redirect-uri: ${KAKAO_REDIRECT_URI}
 
 naver:
-  client-id: ${naver.client-id}
-  redirect-uri: ${naver.redirect-uri}
-  client-secret: ${naver.client-secret}
+  client-id: ${NAVER_CLIENT_ID}
+  redirect-uri: ${NAVER_REDIRECT_URI}
+  client-secret: ${NAVER_CLIENT_SECRET}
 
 mail:
   host: smtp.gmail.com
   port: 587
-  username: ${mail.username}
-  password: ${mail.password}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
   properties:
     mail:
       smtp:
