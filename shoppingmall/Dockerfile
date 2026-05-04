@@ -3,11 +3,11 @@ FROM amazoncorretto:17 AS builder
 WORKDIR /app
 
 # 빌드 파일 복사
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
+COPY shoppingmall/gradlew .
+COPY shoppingmall/gradle gradle
+COPY shoppingmall/build.gradle .
+COPY shoppingmall/settings.gradle .
+COPY shoppingmall/src src
 
 # 권한 부여 및 빌드 (bootJar)
 RUN chmod +x ./gradlew
