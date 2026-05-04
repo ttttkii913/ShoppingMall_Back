@@ -1,20 +1,16 @@
-# Java 17 환경 제공
-FROM amazoncorretto:17
-
-# JAR 파일 경로를 ARG로 받음 (빌드 시 사용)
-ARG JAR_FILE=build/libs/*.jar
-
-# 작업 디렉토리 생성 (선택이지만 권장)
+FROM openjdk:17-jdk-bullseye
 WORKDIR /app
 
-# JAR 파일을 복사하면서 이름을 고정
-COPY ${JAR_FILE} app.jar
+COPY shoppingmall/gradlew .
+COPY shoppingmall/gradlew.bat .
+COPY shoppingmall/build.gradle .
+COPY shoppingmall/settings.gradle .
+COPY shoppingmall/gradle gradle
+COPY shoppingmall/src src
 
-# 포트 노출
-EXPOSE 8080
+RUN apt-get update && apt-get install -y findutils curl bash
 
-# 시간대를 Asia/Seoul로 설정
-RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo 'Asia/Seoul' > /etc/timezone
+RUN chmod +x ./gradlew
+RUN ./gradlew build -x test
 
-# 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "build/libs/shoppingmall-0.0.1-SNAPSHOT.jar"]
